@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
 * Студент: [Владимир Бабич](https://up.htmlacademy.ru/nodejs-2-individual/2/user/2444237).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Виноградов](https://htmlacademy.ru/profile/id2696709)
 
 ---
 
