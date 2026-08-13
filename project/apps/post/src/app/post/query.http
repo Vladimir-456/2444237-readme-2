@@ -1,0 +1,51 @@
+POST http://localhost:3000/api/post
+Content-Type: application/json
+
+{
+  "type": "video",
+  "title": "Очень интересное видео о разработке",
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "tags": [
+    "nestjs",
+    "typescript",
+    "backend"
+  ]
+}
+###
+
+GET http://localhost:3000/api/post
+
+
+###
+
+###
+DELETE http://localhost:3000/api/post/b550328b-b679-4291-87d0-87f322eb528a
+
+###
+POST http://localhost:3000/api/post
+Content-Type: application/json
+
+{
+ "type": "text",
+ "title": "Как правильно изучать NestJS",
+  "preview": "В этой публикации разберём основные возможности NestJS и архитектуру серверного приложения.",
+  "text": "NestJS предоставляет модульную архитектуру, dependency injection, контроллеры, providers, pipes, guards и interceptors. Благодаря этому приложение проще тестировать и расширять.",
+  "tags": [
+    "nestjs",
+    "nodejs"
+  ]
+}
+
+###
+POST http://localhost:3000/api/post
+Content-Type: application/json
+
+{
+  "type": "link",
+  "link": "https://nestjs.com",
+  "description": "Официальный сайт фреймворка NestJS",
+  "tags": [
+    "nestjs",
+    "documentation"
+  ]
+}
