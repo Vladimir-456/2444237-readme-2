@@ -1,6 +1,6 @@
 import { UserInterface } from '@project/shared-types';
 import { Entity } from '@project/core';
-import { genSalt, hash } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './user.constant';
 
 export class UserEntity implements UserInterface, Entity<string> {
@@ -38,6 +38,6 @@ export class UserEntity implements UserInterface, Entity<string> {
   }
 
   public async comparePassword(password: string) {
-    return await hash(password, this.password);
+    return await compare(password, this.password);
   }
 }

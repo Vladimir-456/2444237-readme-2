@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostRepository } from './post.repository';
 import {
   CreateLinkPostDto,
@@ -27,6 +27,12 @@ export class PostService {
   }
 
   public async deletePost(id: string) {
+    const post = await this.postRepository.findById(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
     return await this.postRepository.deletePost(id);
   }
 

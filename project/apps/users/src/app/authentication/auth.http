@@ -3,9 +3,10 @@ POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "alex@example.com",
-  "password": "StrongPassword123!",
-  "name": "Alex"
+  "email": "vlad.stavros@bk.ru",
+  "password": "Strong123!",
+  "name": "Alex",
+  "avatar": "image.png"
 }
 ###
 
@@ -14,11 +15,11 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "alex@example.com",
-    "password": "StrongPassword123!"
+    "email": "vlad.stavros@bk.ru",
+    "password": "Strong123!"
 }
 
 ###
 
 # Get User Data
-GET http://localhost:3000/api/auth/3fea11d0-4e6f-415d-b02b-c452122f265e
+GET http://localhost:3000/api/auth/466adb38-0fb8-42e1-9612-d1a2f3635480

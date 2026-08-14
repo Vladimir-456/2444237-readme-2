@@ -15,9 +15,6 @@ Content-Type: application/json
 
 GET http://localhost:3000/api/post
 
-
-###
-
 ###
 DELETE http://localhost:3000/api/post/b550328b-b679-4291-87d0-87f322eb528a
 
@@ -48,4 +45,14 @@ Content-Type: application/json
     "nestjs",
     "documentation"
   ]
+}
+
+
+###
+
+PATCH  http://localhost:3000/api/post/b91dd596-9649-43b9-b417-3c84c7c54e67
+Content-Type: application/json
+
+{
+  "link": "https://www.youtube.com/watch?v=aqz-KE-bpKQ"
 }

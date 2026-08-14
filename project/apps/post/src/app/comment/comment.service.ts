@@ -4,6 +4,7 @@ import { CommentEntity } from './comment.entity';
 import { CommentRepository } from './comment.repository';
 import { PostRepository } from '../post/post.repository';
 import { CreateCommentDto } from './dto/create-comment';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class CommentService {
@@ -12,9 +13,13 @@ export class CommentService {
     private readonly postRepository: PostRepository,
   ) {}
 
-  async createComment(comment: CreateCommentDto, authorId: string) {
+  async createComment(
+    comment: CreateCommentDto,
+    postId: string,
+    authorId: string,
+  ) {
     const now = new Date();
-    const post = await this.postRepository.findById(comment.postId);
+    const post = await this.postRepository.findById(postId);
 
     if (!post) {
       throw new Error('Post not found');
@@ -24,7 +29,7 @@ export class CommentService {
       id: crypto.randomUUID(),
       text: comment.text,
       authorId: authorId,
-      postId: comment.postId,
+      postId: postId,
       createdAt: now,
     });
 

@@ -19,14 +19,13 @@ async function bootstrap() {
     .build();
 
   app.setGlobalPrefix(globalPrefix);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('spec', app, document);
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
 }
 
 bootstrap();

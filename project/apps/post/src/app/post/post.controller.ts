@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -15,7 +16,7 @@ import { UpdatePostDTO } from './dto/update-dto.interface';
 import { AUTHOR_ID } from './post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('post')
+@ApiTags('Post')
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -35,19 +36,24 @@ export class PostController {
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Delete('/:id')
-  async deletePost(@Param('id') id: string) {
+  async deletePost(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
     return this.postService.deletePost(id);
   }
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Patch('/:id')
-  async updatePost(@Param('id') id: string, @Body() dto: UpdatePostDTO) {
+  async updatePost(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() dto: UpdatePostDTO,
+  ) {
     return this.postService.updatePost(id, dto);
   }
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Get('/:id')
-  async getPost(@Param('id') id: string) {
+  async getPost(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.postService.getPost(id);
   }
 }
