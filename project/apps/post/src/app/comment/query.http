@@ -1,0 +1,15 @@
+GET http://localhost:3000/api/posts/b20a6ef1-3fce-47c9-8e31-bcfe1f918bfe/comments
+
+###
+# Создание комментария
+POST http://localhost:3000/api/posts/286739b2-34d7-4ef3-9f70-0c16b8e3d798/comments
+Content-Type: application/json
+
+{
+    "text": "Test"
+}
+
+###
+
+# Удаление комментария
+DELETE http://localhost:3000/api/posts/b20a6ef1-3fce-47c9-8e31-bcfe1f918bfe/comments/82cc6f39-9f3a-4b47-897d-8167ac7138ac

@@ -1,0 +1,25 @@
+# Create a new user
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "vlad.stavros@bk.ru",
+  "password": "Strong123!",
+  "name": "Alex",
+  "avatar": "image.png"
+}
+###
+
+# Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "vlad.stavros@bk.ru",
+    "password": "Strong123!"
+}
+
+###
+
+# Get User Data
+GET http://localhost:3000/api/auth/466adb38-0fb8-42e1-9612-d1a2f3635480

@@ -13,7 +13,11 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "paths": {}
+    "paths": {
+      "@project/shared-types": ["./libs/shared-types/src/index.ts"],
+      "@project/helpers": ["./libs/helpers/src/index.ts"],
+      "@project/core": ["./libs/core/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
