@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -17,7 +17,13 @@ async function bootstrap() {
     .setDescription('The Post API description')
     .setVersion('1.0')
     .build();
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
   app.setGlobalPrefix(globalPrefix);
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('spec', app, document);
