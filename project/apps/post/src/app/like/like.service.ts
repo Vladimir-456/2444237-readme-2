@@ -44,7 +44,7 @@ export class LikeService {
 
     const created = await this.likeRepository.create(like);
 
-    return created.toPOGO();
+    return created;
   }
 
   async removeLike(postId: string, userId: string): Promise<void> {

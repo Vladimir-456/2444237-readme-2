@@ -1,35 +1,71 @@
-import { randomUUID } from 'node:crypto';
 import { Entity, EntityId } from './entity.interface';
 import { Repository } from './repository.interface';
+import { Document, Model } from 'mongoose';
+import { NotFoundException } from '@nestjs/common';
 
-export class BaseMemoryRepository<T extends Entity<EntityId>>
-  implements Repository<T>
+export class MongoRepository<
+  T extends Entity<EntityId, TData>,
+  DocumentType extends Document,
+  TData = object,
+> implements Repository<T>
 {
-  protected entities: Map<T['id'], T> = new Map();
+  constructor(
+    protected readonly model: Model<DocumentType>,
+    private readonly createEntity: (data: DocumentType) => T,
+  ) {}
+
+  protected createDocument(document: DocumentType | null): T | null {
+    if (!document) {
+      return null;
+    }
+
+    return this.createEntity(document.toObject({ versionKey: false }));
+  }
 
   async findById(id: T['id']): Promise<T | null> {
-    return this.entities.get(id) || null;
+    const document = await this.model.findById(id).exec();
+
+    if (!document) {
+      return null;
+    }
+
+    return this.createEntity(document.toObject());
   }
 
   async save(entity: T): Promise<T> {
-    if (!entity.id) {
-      entity.id = randomUUID();
-    }
-    this.entities.set(entity.id, entity);
-    return entity;
+    const document = await this.model.create(entity.toPOJO() as any);
+    return this.createEntity(document.toObject());
   }
 
   public async update(id: T['id'], entity: T): Promise<T> {
-    if (!this.entities.has(id)) {
-      throw new Error(`Entity with id ${id} does not exist`);
+    const data = entity.toPOJO() as any;
+    const updatedDocument = await this.model
+      .findOneAndUpdate(
+        {
+          _id: id,
+          type: data.type,
+        },
+        {
+          $set: data,
+        },
+        {
+          returnDocument: 'after',
+          runValidators: true,
+        },
+      )
+      .exec();
+
+    if (!updatedDocument) {
+      throw new NotFoundException(`Entity with id ${id} does not exist`);
     }
 
-    entity.id = id;
-    this.entities.set(entity.id, entity);
-    return entity;
+    return this.createEntity(updatedDocument.toObject());
   }
 
   async delete(id: T['id']): Promise<void> {
-    this.entities.delete(id);
+    const deletedDocument = await this.model.findByIdAndDelete(id).exec();
+    if (!deletedDocument) {
+      throw new NotFoundException(`Entity with id ${id} does not exist`);
+    }
   }
 }

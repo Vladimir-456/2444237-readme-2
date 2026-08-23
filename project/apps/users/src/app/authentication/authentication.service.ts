@@ -33,9 +33,7 @@ export class AuthenticationService {
     return (await this.userRepository.save(userEntity)).toPOJO();
   }
 
-  public async verify(data: LoginUserDTO) {
-    const { email, password } = data;
-
+  public async verify({ email, password }: LoginUserDTO) {
     const existUser = await this.userRepository.findByEmail(email);
 
     if (!existUser) {

@@ -1,7 +1,17 @@
-import { BaseMemoryRepository } from '@project/core';
+import { MongoRepository } from '@project/core';
 import { LikeEntity } from './like.entity';
+import { LikeDocument, LikeModel } from './like.model';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
-export class LikeRepository extends BaseMemoryRepository<LikeEntity> {
+@Injectable()
+export class LikeRepository extends MongoRepository<LikeEntity, LikeDocument> {
+  constructor(
+    @InjectModel(LikeModel.name) protected readonly model: Model<LikeDocument>,
+  ) {
+    super(model, LikeEntity.fromObject);
+  }
   create(like: LikeEntity): Promise<LikeEntity> {
     return this.save(like);
   }
@@ -10,13 +20,8 @@ export class LikeRepository extends BaseMemoryRepository<LikeEntity> {
     userId: string,
     postId: string,
   ): Promise<LikeEntity | null> {
-    const like = Array.from(this.entities.values()).find((item) => {
-      const data = item.toPOGO();
-
-      return data.userId === userId && data.postId === postId;
-    });
-
-    return like ?? null;
+    const document = await this.model.findOne({ userId, postId }).exec();
+    return document ? this.createDocument(document) : null;
   }
 
   async deleteByUserAndPost(userId: string, postId: string): Promise<void> {

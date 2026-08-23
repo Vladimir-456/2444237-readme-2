@@ -23,7 +23,7 @@ export class PostService {
   public async getPosts() {
     const posts = await this.postRepository.findAll();
 
-    return posts.map((post) => post.toPOJO());
+    return posts.map((post) => post.toObject());
   }
 
   public async deletePost(id: string) {
@@ -44,6 +44,7 @@ export class PostService {
     }
 
     post.update(dto);
+
     const updatedPost = await this.postRepository.update(id, post);
     return updatedPost.toPOJO();
   }
@@ -75,13 +76,13 @@ export class PostService {
       authorId,
       type: PostType.VIDEO,
       status: PostStatus.PUBLISHED,
+      url: dto.url,
       createdAt: now,
       updatedAt: now,
       publishDate: now,
       isRepost: false,
       tags: dto.tags ?? [],
       title: dto.title,
-      link: dto.url,
     });
 
     const created = await this.postRepository.create(post);

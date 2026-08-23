@@ -10,13 +10,23 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
+    "types": [
+      "node",
+      "express",
+      "multer"
+    ],
     "lib": ["es2020", "dom"],
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
       "@project/shared-types": ["./libs/shared-types/src/index.ts"],
       "@project/helpers": ["./libs/helpers/src/index.ts"],
-      "@project/core": ["./libs/core/src/index.ts"]
+      "@project/core": ["./libs/core/src/index.ts"],
+      "@project/config": ["./libs/shared/config/src/index.ts"],
+      "@project/config-users": [
+        "./libs/shared-config/config-users/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

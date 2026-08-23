@@ -1,7 +1,8 @@
 import { Entity } from '@project/core';
 import { PostInterface } from '@project/shared-types';
+import { PostDocument } from './post.model';
 
-export class PostEntity implements Entity<string> {
+export class PostEntity implements Entity<string, PostInterface> {
   public id?: string;
   private post!: PostInterface;
 
@@ -11,6 +12,7 @@ export class PostEntity implements Entity<string> {
 
   public populate(post: PostInterface) {
     this.post = post;
+    this.id = post.id;
     return this;
   }
 
@@ -30,5 +32,12 @@ export class PostEntity implements Entity<string> {
       ...this.post,
       id: this.id!,
     };
+  }
+
+  static fromObject(post: PostDocument) {
+    return new PostEntity({
+      ...(post as unknown as PostInterface),
+      id: post._id.toString(),
+    });
   }
 }

@@ -25,7 +25,7 @@ interface BasePost {
 export interface VideoPost extends BasePost {
   type: PostType.VIDEO;
   title: string;
-  link: string;
+  url: string;
 }
 
 export interface TextPost extends BasePost {

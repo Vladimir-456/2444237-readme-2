@@ -1,0 +1,34 @@
+services:
+  readme-users.mongo:
+    image: mongo:latest
+    restart: always
+    env_file:
+       - ./users.env
+    container_name: readme-users.mongo
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+
+  readme-users.mongo.ui:
+    image: mongo-express:latest
+    container_name: readme-users.mongo.ui
+    depends_on:
+      - readme-users.mongo
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@readme-users.mongo:27017/?authSource=admin
+
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_AUTH_BASE}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_AUTH_BASE_PASSWORD}
+
+volumes:
+  mongo_data:
