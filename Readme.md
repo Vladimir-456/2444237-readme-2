@@ -47,3 +47,23 @@ git clone SSH-адрес_вашего_форка
 <a href="https://htmlacademy.ru/profession/fullstack"><img align="left" width="50" height="50" title="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/nodejs/logo-for-github-2.png"></a>
 
 Репозиторий создан для обучения на профессиональном онлайн‑курсе «[Node.js. Проектирование веб-сервисов](https://htmlacademy.ru/profession/fullstack)» от [HTML Academy](https://htmlacademy.ru).
+
+
+### Настройка окружения
+Скопировать файл с примером переменных .example.env в .env и заполнить со своими значениями.
+
+```env
+
+# Server
+ENVIRONMENT=development
+PORT=3300
+
+# Database
+MONGO_DB=readme-users
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_USER=admin
+MONGO_PASSWORD=123456
+MONGO_AUTH_BASE=admin
+MONGO_AUTH_BASE_PASSWORD=test
+```

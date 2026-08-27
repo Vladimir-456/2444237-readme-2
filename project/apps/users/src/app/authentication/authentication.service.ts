@@ -44,7 +44,7 @@ export class AuthenticationService {
       throw new ConflictException('Invalid password');
     }
 
-    return existUser;
+    return existUser.toPOJO();
   }
 
   public getUser(id: string) {
