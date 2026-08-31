@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/post
+POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
@@ -13,13 +13,13 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:3000/api/post
+GET http://localhost:3300/api/post
 
 ###
-DELETE http://localhost:3000/api/post/b550328b-b679-4291-87d0-87f322eb528a
+DELETE http://localhost:3300/api/post/6a8997e9b339be5032656bf0
 
 ###
-POST http://localhost:3000/api/post
+POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/post
+POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
@@ -50,9 +50,10 @@ Content-Type: application/json
 
 ###
 
-PATCH  http://localhost:3000/api/post/b91dd596-9649-43b9-b417-3c84c7c54e67
+PATCH  http://localhost:3300/api/post/6a8ae77aa3794263d1033a0e
 Content-Type: application/json
 
 {
-  "link": "https://www.youtube.com/watch?v=aqz-KE-bpKQ"
+  "link": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+  "description": "Тест"
 }

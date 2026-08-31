@@ -14,8 +14,7 @@ export class CreateUserRdo {
   @ApiProperty({ description: 'User name', example: 'John Doe' })
   @Expose()
   name!: string;
-  @ApiProperty({ description: 'User password', example: 'password' })
-  password!: string;
+
   @ApiProperty({ description: 'User avatar', example: 'avatar.jpg' })
   @Expose()
   avatar?: string;

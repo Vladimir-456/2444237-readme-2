@@ -13,6 +13,7 @@ import { LoginUserDTO } from './dto/login-user.dto';
 import { CreateUserRdo } from './rdo/create-user.rdo';
 import { LoginUserRdo } from './rdo/login-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ParseMongoIdPipe } from '@project/core';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -33,8 +34,9 @@ export class AuthenticationController {
     return fillDTO(LoginUserRdo, user);
   }
 
+  @ApiResponse({ type: LoginUserRdo })
   @Get(':id')
-  async getUser(@Param('id') id: string) {
+  async getUser(@Param('id', new ParseMongoIdPipe()) id: string) {
     const user = await this.authenticationService.getUser(id);
 
     if (!user) throw new NotFoundException('User not found');

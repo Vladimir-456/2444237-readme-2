@@ -1,0 +1,6 @@
+POST "users/6ddbfb434df3efd3/avatar"
+Content-Type: multipart/form-data
+
+{
+
+}

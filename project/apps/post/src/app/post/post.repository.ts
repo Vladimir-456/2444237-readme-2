@@ -1,7 +1,16 @@
-import { BaseMemoryRepository } from '@project/core';
+import { MongoRepository } from '@project/core';
 import { PostEntity } from './post.entity';
+import { BasePostModel, PostDocument } from './post.model';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
-export class PostRepository extends BaseMemoryRepository<PostEntity> {
+export class PostRepository extends MongoRepository<PostEntity, PostDocument> {
+  constructor(
+    @InjectModel(BasePostModel.name)
+    protected readonly model: Model<PostDocument>,
+  ) {
+    super(model, PostEntity.fromObject);
+  }
   async create(post: PostEntity): Promise<PostEntity> {
     return this.save(post);
   }
@@ -11,6 +20,6 @@ export class PostRepository extends BaseMemoryRepository<PostEntity> {
   }
 
   async findAll() {
-    return Array.from(this.entities.values());
+    return this.model.find().exec();
   }
 }

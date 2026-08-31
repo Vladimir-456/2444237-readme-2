@@ -1,5 +1,5 @@
 # Create a new user
-POST http://localhost:3000/api/auth/register
+POST http://localhost:3300/api/auth/register
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # Login
-POST http://localhost:3000/api/auth/login
+POST http://localhost:3300/api/auth/login
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
 ###
 
 # Get User Data
-GET http://localhost:3000/api/auth/466adb38-0fb8-42e1-9612-d1a2f3635480
+GET http://localhost:3300/api/auth/6a8aee4e5f22a797616ad198

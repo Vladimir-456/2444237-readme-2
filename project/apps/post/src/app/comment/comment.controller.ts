@@ -4,6 +4,7 @@ import { CommentService } from './comment.service';
 import { AUTHOR_ID } from '../post/post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentRDO } from './rdo/comment.rdo';
+import { fillDTO } from '@project/helpers';
 
 @ApiTags('Comment')
 @Controller()
@@ -16,13 +17,19 @@ export class CommentController {
     @Body() dto: CreateCommentDto,
     @Param('postId') postId: string,
   ) {
-    return this.commentService.createComment(dto, postId, AUTHOR_ID);
+    const comment = await this.commentService.createComment(
+      dto,
+      postId,
+      AUTHOR_ID,
+    );
+    return fillDTO(CommentRDO, comment);
   }
 
   @ApiResponse({ status: 200, type: [CommentRDO] })
   @Get('post/:postId/comments')
   async getComments(@Param('postId') postId: string) {
-    return this.commentService.getComments(postId);
+    const comments = await this.commentService.getComments(postId);
+    return fillDTO(CommentRDO, comments);
   }
 
   @ApiResponse({ status: 200 })

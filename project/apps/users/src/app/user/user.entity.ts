@@ -2,8 +2,11 @@ import { UserInterface } from '@project/shared-types';
 import { Entity } from '@project/core';
 import { compare, genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './user.constant';
+import { UserDocument } from './user.model';
 
-export class UserEntity implements UserInterface, Entity<string> {
+export class UserEntity
+  implements UserInterface, Entity<string, UserInterface>
+{
   public id?: string;
   public email!: string;
   public name!: string;
@@ -25,6 +28,7 @@ export class UserEntity implements UserInterface, Entity<string> {
   }
 
   public populate(user: UserInterface) {
+    this.id = user.id;
     this.email = user.email;
     this.name = user.name;
     this.password = user.password;
@@ -39,5 +43,12 @@ export class UserEntity implements UserInterface, Entity<string> {
 
   public async comparePassword(password: string) {
     return await compare(password, this.password);
+  }
+
+  static fromObject(user: UserDocument) {
+    return new UserEntity({
+      ...user,
+      id: user._id.toString(),
+    });
   }
 }

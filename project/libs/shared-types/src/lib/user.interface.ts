@@ -5,3 +5,11 @@ export interface UserInterface {
   password: string;
   avatar?: string;
 }
+
+export interface UserAvatarInterface {
+  userId: string;
+  mimetype: string;
+  size: number;
+  path: string;
+  filename: string;
+}

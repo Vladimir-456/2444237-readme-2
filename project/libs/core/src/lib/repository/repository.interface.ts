@@ -1,6 +1,6 @@
 import { Entity, EntityId } from './entity.interface';
 
-export interface Repository<T extends Entity<EntityId>> {
+export interface Repository<T extends Entity<EntityId, any>> {
   findById(id: T['id']): Promise<T | null>;
   save(entity: T): Promise<T>;
   update(id: T['id'], entity: T): Promise<T>;

@@ -28,3 +28,15 @@ export function fillDTO<T extends object>(
     excludeExtraneousValues: true,
   });
 }
+
+export type DBConfig = {
+  db: string;
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  authBase: string;
+};
+export function getMongoConnectString(config: DBConfig): string {
+  return `mongodb://${config.user}:${config.password}@${config.host}:${config.port}/${config.db}?authSource=${config.authBase}`;
+}
