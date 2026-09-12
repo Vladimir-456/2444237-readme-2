@@ -10,7 +10,6 @@ import { fillDTO } from '@project/helpers';
 @Controller()
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
-
   @ApiResponse({ status: 201, type: CommentRDO })
   @Post('post/:postId/comments')
   async createComment(
@@ -24,14 +23,12 @@ export class CommentController {
     );
     return fillDTO(CommentRDO, comment);
   }
-
   @ApiResponse({ status: 200, type: [CommentRDO] })
   @Get('post/:postId/comments')
   async getComments(@Param('postId') postId: string) {
     const comments = await this.commentService.getComments(postId);
     return fillDTO(CommentRDO, comments);
   }
-
   @ApiResponse({ status: 200 })
   @Delete('post/:postId/comments/:commentId')
   async deleteComment(@Param('commentId') commentId: string) {

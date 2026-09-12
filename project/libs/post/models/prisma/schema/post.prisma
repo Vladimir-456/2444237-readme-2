@@ -1,0 +1,42 @@
+datasource db_post {
+    provider = "postgresql"
+}
+
+enum PostType {
+    VIDEO
+    TEXT
+    PHOTO
+    QUOTE
+    LINK
+}
+
+enum PostStatus {
+    PUBLISHED
+    DRAFT
+}
+
+model Post {
+    id          String     @id @default(uuid())
+    authorId    String     @map("author_id")
+    tags        String[]
+    status      PostStatus @default(DRAFT)
+    isRepost    Boolean
+    createdAt   DateTime   @default(now()) @map("created_at")
+    updatedAt   DateTime   @updatedAt @map("updated_at")
+    publishDate DateTime
+
+    typePost PostType @default(TEXT) @map("type_post")
+    title    String?
+    url      String?
+    preview  String?
+    text     String?
+
+    author      String?
+    imageUrl    String?   @map("image_url")
+    link        String?
+    description String?
+    comments    Comment[]
+    likes       Like[]
+
+    @@map("posts")
+}

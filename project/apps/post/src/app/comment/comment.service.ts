@@ -21,7 +21,6 @@ export class CommentService {
     postId: string,
     authorId: string,
   ) {
-    const now = new Date();
     const post = await this.postRepository.findById(postId);
 
     if (!post) {
@@ -31,24 +30,19 @@ export class CommentService {
     const commentEntity = new CommentEntity({
       id: crypto.randomUUID(),
       text: comment.text,
-      authorId: authorId,
+      author: authorId,
       postId: postId,
-      createdAt: now,
     });
-
-    console.log(commentEntity);
 
     const createdComment =
       await this.commentRepository.createComment(commentEntity);
-
-    console.log(createdComment.id);
 
     return createdComment.toPOJO();
   }
 
   async getComments(postId: string) {
     const comments = await this.commentRepository.getComments(postId);
-    return comments.map((comment) => comment.toObject());
+    return comments.map((comment) => comment.toPOJO());
   }
 
   async deleteComment(commentId: string, authorId: string) {
@@ -60,7 +54,7 @@ export class CommentService {
 
     const commentData = comment.toPOJO();
 
-    if (commentData.authorId !== authorId) {
+    if (commentData.author !== authorId) {
       throw new ForbiddenException('You can delete only your own comment');
     }
     return await this.commentRepository.deleteComment(commentId);

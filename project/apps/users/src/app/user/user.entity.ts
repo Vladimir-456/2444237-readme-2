@@ -7,7 +7,7 @@ import { UserDocument } from './user.model';
 export class UserEntity
   implements UserInterface, Entity<string, UserInterface>
 {
-  public id?: string;
+  public id: string;
   public email!: string;
   public name!: string;
   public password!: string;

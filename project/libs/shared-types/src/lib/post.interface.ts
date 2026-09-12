@@ -1,14 +1,16 @@
+import { CommentInterface } from './comments.interface';
+
 export enum PostType {
-  VIDEO = 'video',
-  TEXT = 'text',
-  PHOTO = 'photo',
-  QUOTE = 'quote',
-  LINK = 'link',
+  VIDEO = 'VIDEO',
+  TEXT = 'TEXT',
+  PHOTO = 'PHOTO',
+  QUOTE = 'QUOTE',
+  LINK = 'LINK',
 }
 
 export enum PostStatus {
-  PUBLISHED = 'published',
-  DRAFT = 'draft',
+  PUBLISHED = 'PUBLISHED',
+  DRAFT = 'DRAFT',
 }
 
 interface BasePost {
@@ -20,34 +22,35 @@ interface BasePost {
   updatedAt: Date;
   publishDate: Date;
   isRepost: boolean;
+  comments?: CommentInterface[];
 }
 
 export interface VideoPost extends BasePost {
-  type: PostType.VIDEO;
+  typePost: PostType.VIDEO;
   title: string;
   url: string;
 }
 
 export interface TextPost extends BasePost {
-  type: PostType.TEXT;
+  typePost: PostType.TEXT;
   title: string;
   preview: string;
   text: string;
 }
 
 export interface QuotePost extends BasePost {
-  type: PostType.QUOTE;
+  typePost: PostType.QUOTE;
   text: string;
   author: string;
 }
 
 export interface PhotoPost extends BasePost {
-  type: PostType.PHOTO;
+  typePost: PostType.PHOTO;
   imageUrl: string;
 }
 
 export interface LinkPost extends BasePost {
-  type: PostType.LINK;
+  typePost: PostType.LINK;
   link: string;
   description: string;
 }
