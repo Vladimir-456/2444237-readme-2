@@ -34,13 +34,6 @@ export class CommentEntity implements Entity<string, CommentInterface> {
     };
   }
 
-  // static fromObject(comment: CommentDocument) {
-  //   return new CommentEntity({
-  //     ...comment,
-  //     id: comment._id.toString(),
-  //   });
-  // }
-
   static fromPrisma(comment: PrismaComment) {
     return new CommentEntity(comment);
   }

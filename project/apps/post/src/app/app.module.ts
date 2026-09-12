@@ -16,7 +16,6 @@ const ENV_POST_FILE_PATH = 'apps/post/post.env';
       load: [mongoConfig],
       envFilePath: ENV_POST_FILE_PATH,
     }),
-    // MongooseModule.forRootAsync(getMongooseOptions()),
     PostModule,
     CommentModule,
     LikeModule,
