@@ -22,4 +22,4 @@ Content-Type: application/json
 ###
 
 # Get User Data
-GET http://localhost:3300/api/auth/6a8aee4e5f22a797616ad198
+GET http://localhost:3300/api/auth/6a86f3b939a44737f9ff8b79

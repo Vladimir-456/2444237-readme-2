@@ -1,8 +1,14 @@
 import { PrismaClient, PostStatus, PostType } from '@prisma/client';
 import 'dotenv/config';
+import * as dotenv from 'dotenv';
 import { PrismaPg } from '@prisma/adapter-pg';
-const connectionString =
-  'postgresql://postgres:12@localhost:5432/readme?schema=public';
+import * as path from 'node:path';
+
+const envPath = path.resolve(process.cwd(), '../.env');
+
+dotenv.config({
+  path: envPath,
+});
 
 const FIRST_USER_ID = '658170cbb954e9f5b905ccf4';
 const SECOND_USER_ID = '6581762309c030b503e30512';
@@ -95,7 +101,9 @@ const seedDB = async (prisma: PrismaClient) => {
   console.info('🤘 Database was filled');
 };
 
-const adapter = new PrismaPg(connectionString);
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL || '',
+});
 
 const bootstrap = async () => {
   const prismaClient = new PrismaClient({
@@ -104,8 +112,9 @@ const bootstrap = async () => {
 
   try {
     await seedDB(prismaClient);
+    process.exit(0);
   } catch (error) {
-    console.error('Seed error:', error);
+    process.exit(1);
   } finally {
     await prismaClient.$disconnect();
   }

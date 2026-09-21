@@ -28,7 +28,10 @@ export class AuthenticationService {
       throw new ConflictException('User already exists');
     }
 
-    const userEntity = await new UserEntity(user).setPassword(password);
+    const userEntity = await new UserEntity({
+      ...user,
+      id: crypto.randomUUID(),
+    }).setPassword(password);
 
     return (await this.userRepository.save(userEntity)).toPOJO();
   }

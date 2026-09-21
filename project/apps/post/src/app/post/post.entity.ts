@@ -2,7 +2,6 @@ import { Entity } from '@project/core';
 import { PostInterface } from '@project/shared-types';
 import { PostType } from '@prisma/client';
 import { PostType as DomainPostType, PostStatus } from '@project/shared-types';
-import { PostDocument } from './post.model';
 import { Prisma } from '@prisma/client';
 
 export type PrismaPost = Prisma.PostGetPayload<{}>;
@@ -37,13 +36,6 @@ export class PostEntity implements Entity<string, PostInterface> {
       ...this.post,
       id: this.id!,
     };
-  }
-
-  static fromObject(post: PostDocument) {
-    return new PostEntity({
-      ...(post as unknown as PostInterface),
-      id: post._id.toString(),
-    });
   }
 
   static fromPrisma(post: PrismaPost): PostEntity {

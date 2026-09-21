@@ -56,6 +56,6 @@ export class PostController {
     const post = await this.postService.getPost(id);
 
     if (!post) throw new NotFoundException('Post not found');
-    return fillDTO(CreatePostRDO, post);
+    return fillDTO(CreatePostRDO, post.toPOJO());
   }
 }
