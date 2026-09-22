@@ -1,29 +1,50 @@
-import { MongoRepository } from '@project/core';
+import { MongoRepository, PrismaRepository } from '@project/core';
 import { CommentEntity } from './comment.entity';
 import { CommentDocument } from './comment.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CommentModel } from './comment.model';
+import { PrismaClient } from '@prisma/client';
+import { CommentInterface } from '@project/shared-types';
+import { PrismaClientService } from '@project/models';
+import { Injectable } from '@nestjs/common';
 
-export class CommentRepository extends MongoRepository<
+@Injectable()
+export class CommentRepository extends PrismaRepository<
   CommentEntity,
-  CommentDocument
+  PrismaClient['comment'],
+  CommentInterface
 > {
-  constructor(
-    @InjectModel(CommentModel.name)
-    protected readonly model: Model<CommentDocument>,
-  ) {
-    super(model, CommentEntity.fromObject);
-  }
-  async createComment(comment: CommentEntity) {
-    return this.save(comment);
+  constructor(prisma: PrismaClientService) {
+    super(prisma.comment, (data) => CommentEntity.fromPrisma(data));
   }
 
-  async deleteComment(id: string) {
-    return this.delete(id);
+  async createComment(comment: CommentInterface) {
+    const newComment = await this.model.create({
+      data: {
+        id: comment.id,
+        text: comment.text,
+        author: comment.author,
+        postId: comment.postId,
+      },
+    });
+    return CommentEntity.fromPrisma(newComment);
   }
 
   async getComments(postId: string) {
-    return this.model.find({ postId }).exec();
+    const comments = await this.model.findMany({
+      where: {
+        postId,
+      },
+    });
+    return comments.map((comment) => CommentEntity.fromPrisma(comment));
+  }
+
+  async deleteComment(commentId: string) {
+    await this.model.deleteMany({
+      where: {
+        id: commentId,
+      },
+    });
   }
 }

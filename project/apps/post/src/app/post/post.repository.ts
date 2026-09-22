@@ -1,25 +1,22 @@
-import { MongoRepository } from '@project/core';
+import { PrismaClient } from '@prisma/client';
 import { PostEntity } from './post.entity';
-import { BasePostModel, PostDocument } from './post.model';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PrismaRepository } from '@project/core';
+import { PostInterface } from '@project/shared-types';
+import { PrismaClientService } from '@project/models';
+import { Injectable } from '@nestjs/common';
 
-export class PostRepository extends MongoRepository<PostEntity, PostDocument> {
-  constructor(
-    @InjectModel(BasePostModel.name)
-    protected readonly model: Model<PostDocument>,
-  ) {
-    super(model, PostEntity.fromObject);
-  }
-  async create(post: PostEntity): Promise<PostEntity> {
-    return this.save(post);
-  }
-
-  async deletePost(id: string): Promise<void> {
-    this.delete(id);
+@Injectable()
+export class PostRepository extends PrismaRepository<
+  PostEntity,
+  PrismaClient['post'],
+  PostInterface
+> {
+  constructor(prisma: PrismaClientService) {
+    super(prisma.post, (data) => PostEntity.fromPrisma(data));
   }
 
-  async findAll() {
-    return this.model.find().exec();
+  async findAll(): Promise<PostEntity[]> {
+    const posts = await this.model.findMany();
+    return posts.map((post) => PostEntity.fromPrisma(post));
   }
 }

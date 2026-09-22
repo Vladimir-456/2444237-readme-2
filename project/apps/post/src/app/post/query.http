@@ -2,7 +2,7 @@ POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
-  "type": "video",
+  "typePost": "VIDEO",
   "title": "Очень интересное видео о разработке",
   "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   "tags": [
@@ -15,15 +15,18 @@ Content-Type: application/json
 
 GET http://localhost:3300/api/post
 
+
 ###
-DELETE http://localhost:3300/api/post/6a8997e9b339be5032656bf0
+GET http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
+###
+DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 
 ###
 POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
- "type": "text",
+ "typePost": "TEXT",
  "title": "Как правильно изучать NestJS",
   "preview": "В этой публикации разберём основные возможности NestJS и архитектуру серверного приложения.",
   "text": "NestJS предоставляет модульную архитектуру, dependency injection, контроллеры, providers, pipes, guards и interceptors. Благодаря этому приложение проще тестировать и расширять.",
@@ -38,7 +41,7 @@ POST http://localhost:3300/api/post
 Content-Type: application/json
 
 {
-  "type": "link",
+  "typePost": "LINK",
   "link": "https://nestjs.com",
   "description": "Официальный сайт фреймворка NestJS",
   "tags": [
@@ -50,10 +53,10 @@ Content-Type: application/json
 
 ###
 
-PATCH  http://localhost:3300/api/post/6a8ae77aa3794263d1033a0e
+PATCH  http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 Content-Type: application/json
 
 {
-  "link": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-  "description": "Тест"
+  "text": "Test",
+  "preview": "В этой публикации разберём основные возможности NestJS"
 }

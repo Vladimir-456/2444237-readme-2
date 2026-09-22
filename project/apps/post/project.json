@@ -4,6 +4,7 @@
   "sourceRoot": "apps/post/src",
   "projectType": "application",
   "targets": {
+    
     "build": {
       "executor": "nx:run-commands",
       "options": {
@@ -21,6 +22,7 @@
         }
       }
     },
+    
     "prune-lockfile": {
       "dependsOn": ["build"],
       "cache": true,
@@ -63,7 +65,49 @@
           "buildTarget": "post:build:production"
         }
       }
-    }
+    },
+        "db:lint": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx prisma validate --schema ./schema",
+            "cwd": "libs/post/models/prisma"
+          }
+        },
+        "db:migrate": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx prisma migrate dev --schema ./prisma/schema",
+            "cwd": "libs/post/models"
+          }
+        },
+        "db:generate": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx prisma generate --schema libs/post/models/prisma/schema/",
+            "cwd": "."
+          }
+        },
+        "db-fill": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx ts-node seed.ts",
+            "cwd": "libs/post/models/prisma"
+          }
+        },
+        "db:push": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx prisma db push --schema ./schema",
+            "cwd": "libs/post/models/prisma"
+          }
+        },
+        "db:reset": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "npx prisma migrate reset --force --schema ./prisma/schema",
+            "cwd": "libs/post/models"
+          }
+        }
   },
   "tags": []
 }

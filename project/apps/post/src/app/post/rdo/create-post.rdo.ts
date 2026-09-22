@@ -19,7 +19,7 @@ export class CreatePostRDO {
 
   @Expose()
   @ApiProperty({ description: 'Post type', example: PostType.TEXT })
-  type!: PostType;
+  typePost!: PostType;
 
   @Expose()
   @ApiProperty({ description: 'Post status', example: PostStatus.PUBLISHED })

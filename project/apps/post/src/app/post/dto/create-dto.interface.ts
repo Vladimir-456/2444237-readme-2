@@ -7,7 +7,7 @@ export class CreateLinkPostDto {
     description: 'Post type',
     example: PostType.LINK,
   })
-  readonly type = PostType.LINK;
+  readonly typePost = PostType.LINK;
 
   @ApiProperty({ description: 'Post link', example: 'https://google.com' })
   @IsUrl({}, { message: 'Invalid link' })
@@ -24,7 +24,7 @@ export class CreateLinkPostDto {
 
 export class CreatePhotoPostDto {
   @ApiProperty({ description: 'Post type', example: PostType.PHOTO })
-  readonly type = PostType.PHOTO;
+  readonly typePost = PostType.PHOTO;
   @ApiProperty({ description: 'Post image', example: 'image.jpg' })
   public imageUrl!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
@@ -34,7 +34,7 @@ export class CreatePhotoPostDto {
 
 export class CreateQuotePostDto {
   @ApiProperty({ description: 'Post type', example: PostType.QUOTE })
-  readonly type = PostType.QUOTE;
+  readonly typePost = PostType.QUOTE;
 
   @MinLength(20, { message: 'Title must be at least 20 characters' })
   @MaxLength(300, { message: 'Title must be shorter than 300 characters' })
@@ -52,7 +52,7 @@ export class CreateQuotePostDto {
 
 export class CreateTextPostDto {
   @ApiProperty({ description: 'Post type', example: PostType.TEXT })
-  readonly type = PostType.TEXT;
+  readonly typePost = PostType.TEXT;
 
   @MinLength(20, { message: 'Title must be at least 20 characters' })
   @MaxLength(50, { message: 'Title must be shorter than 50 characters' })
@@ -75,7 +75,7 @@ export class CreateTextPostDto {
 
 export class CreateVideoPostDto {
   @ApiProperty({ description: 'Post type', example: PostType.VIDEO })
-  readonly type = PostType.VIDEO;
+  readonly typePost = PostType.VIDEO;
 
   @MinLength(20, { message: 'Title must be at least 20 characters' })
   @MaxLength(50, { message: 'Title must be shorter than 50 characters' })

@@ -5,7 +5,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -16,7 +15,6 @@ import { CreatePostDTO } from './dto/create-dto.interface';
 import { UpdatePostDTO } from './dto/update-dto.interface';
 import { AUTHOR_ID } from './post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ParseMongoIdPipe } from '@project/core';
 
 @ApiTags('Post')
 @Controller('post')
@@ -33,32 +31,29 @@ export class PostController {
   @Post('/')
   async createPost(@Body() dto: CreatePostDTO) {
     const created = await this.postService.createPost(dto, AUTHOR_ID);
-    console.log(created);
+
     return fillDTO(CreatePostRDO, created);
   }
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Delete('/:id')
-  async deletePost(@Param('id', new ParseMongoIdPipe()) id: string) {
+  async deletePost(@Param('id') id: string) {
     return this.postService.deletePost(id);
   }
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Patch('/:id')
-  async updatePost(
-    @Param('id', new ParseMongoIdPipe()) id: string,
-    @Body() dto: UpdatePostDTO,
-  ) {
+  async updatePost(@Param('id') id: string, @Body() dto: UpdatePostDTO) {
     const updated = await this.postService.updatePost(id, dto);
     return fillDTO(CreatePostRDO, updated);
   }
 
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Get('/:id')
-  async getPost(@Param('id', new ParseMongoIdPipe()) id: string) {
+  async getPost(@Param('id') id: string) {
     const post = await this.postService.getPost(id);
 
     if (!post) throw new NotFoundException('Post not found');
-    return fillDTO(CreatePostRDO, post);
+    return fillDTO(CreatePostRDO, post.toPOJO());
   }
 }

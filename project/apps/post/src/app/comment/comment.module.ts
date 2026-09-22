@@ -5,14 +5,10 @@ import { CommentRepository } from './comment.repository';
 import { PostModule } from '../post/post.module';
 import { CommentModel, CommentSchema } from './comment.model';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PrismaClientModule } from '@project/models';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: CommentModel.name, schema: CommentSchema },
-    ]),
-    PostModule,
-  ],
+  imports: [PrismaClientModule, PostModule],
   providers: [CommentService, CommentRepository],
   controllers: [CommentController],
 })

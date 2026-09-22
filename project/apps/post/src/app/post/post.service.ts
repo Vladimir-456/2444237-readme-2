@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostRepository } from './post.repository';
 import {
   CreateLinkPostDto,
@@ -11,6 +15,8 @@ import {
 import { PostEntity } from './post.entity';
 import { PostInterface, PostStatus, PostType } from '@project/shared-types';
 import { UpdatePostDTO } from './dto/update-dto.interface';
+import { Prisma } from '@prisma/client';
+type PrismaPost = Prisma.PostGetPayload<{}>;
 
 @Injectable()
 export class PostService {
@@ -23,7 +29,7 @@ export class PostService {
   public async getPosts() {
     const posts = await this.postRepository.findAll();
 
-    return posts.map((post) => post.toObject());
+    return posts.map((post) => post.toPOJO());
   }
 
   public async deletePost(id: string) {
@@ -33,14 +39,14 @@ export class PostService {
       throw new NotFoundException('Post not found');
     }
 
-    return await this.postRepository.deletePost(id);
+    return await this.postRepository.delete(id);
   }
 
   async updatePost(id: string, dto: UpdatePostDTO) {
     const post = await this.postRepository.findById(id);
 
     if (!post) {
-      throw new Error('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     post.update(dto);
@@ -50,7 +56,7 @@ export class PostService {
   }
 
   public async createPost(dto: CreatePostDTO, authorId: string) {
-    switch (dto.type) {
+    switch (dto.typePost) {
       case PostType.VIDEO:
         return this.createVideoPost(dto, authorId);
       case PostType.PHOTO:
@@ -62,7 +68,7 @@ export class PostService {
       case PostType.QUOTE:
         return this.createQuotePost(dto, authorId);
       default:
-        throw new Error('Invalid post type');
+        throw new BadRequestException('Invalid post type');
     }
   }
 
@@ -74,7 +80,7 @@ export class PostService {
     const post = new PostEntity({
       id: crypto.randomUUID(),
       authorId,
-      type: PostType.VIDEO,
+      typePost: PostType.VIDEO,
       status: PostStatus.PUBLISHED,
       url: dto.url,
       createdAt: now,
@@ -85,7 +91,7 @@ export class PostService {
       title: dto.title,
     });
 
-    const created = await this.postRepository.create(post);
+    const created = await this.postRepository.save(post);
 
     return created.toPOJO();
   }
@@ -98,7 +104,7 @@ export class PostService {
     const post = new PostEntity({
       id: crypto.randomUUID(),
       authorId,
-      type: PostType.PHOTO,
+      typePost: PostType.PHOTO,
       status: PostStatus.PUBLISHED,
       createdAt: now,
       updatedAt: now,
@@ -108,7 +114,7 @@ export class PostService {
       imageUrl: dto.imageUrl,
     });
 
-    const created = await this.postRepository.create(post);
+    const created = await this.postRepository.save(post);
 
     return created.toPOJO();
   }
@@ -121,7 +127,7 @@ export class PostService {
     const post = new PostEntity({
       id: crypto.randomUUID(),
       authorId,
-      type: PostType.TEXT,
+      typePost: PostType.TEXT,
       status: PostStatus.PUBLISHED,
       createdAt: now,
       updatedAt: now,
@@ -133,7 +139,7 @@ export class PostService {
       text: dto.text,
     });
 
-    const created = await this.postRepository.create(post);
+    const created = await this.postRepository.save(post);
 
     return created.toPOJO();
   }
@@ -146,7 +152,7 @@ export class PostService {
     const post = new PostEntity({
       id: crypto.randomUUID(),
       authorId,
-      type: PostType.LINK,
+      typePost: PostType.LINK,
       status: PostStatus.PUBLISHED,
       createdAt: now,
       updatedAt: now,
@@ -157,7 +163,7 @@ export class PostService {
       link: dto.link,
     });
 
-    const created = await this.postRepository.create(post);
+    const created = await this.postRepository.save(post);
 
     return created.toPOJO();
   }
@@ -170,7 +176,7 @@ export class PostService {
     const post = new PostEntity({
       id: crypto.randomUUID(),
       authorId,
-      type: PostType.QUOTE,
+      typePost: PostType.QUOTE,
       status: PostStatus.PUBLISHED,
       createdAt: now,
       updatedAt: now,
@@ -181,7 +187,7 @@ export class PostService {
       author: dto.author,
     });
 
-    const created = await this.postRepository.create(post);
+    const created = await this.postRepository.save(post);
 
     return created.toPOJO();
   }

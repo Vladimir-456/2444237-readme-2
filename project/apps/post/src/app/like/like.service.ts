@@ -39,10 +39,9 @@ export class LikeService {
       id: crypto.randomUUID(),
       postId,
       userId,
-      createdAt: new Date(),
     });
 
-    const created = await this.likeRepository.create(like);
+    const created = await this.likeRepository.create(like.postId, like.userId);
 
     return created;
   }

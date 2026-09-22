@@ -10,6 +10,12 @@ import { Document } from 'mongoose';
 export class UserModel extends Document implements UserInterface {
   @Prop({
     required: true,
+    unique: true,
+  })
+  public id: string;
+
+  @Prop({
+    required: true,
   })
   public email: string;
   @Prop({
