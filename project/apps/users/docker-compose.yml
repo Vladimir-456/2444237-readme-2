@@ -14,11 +14,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.stats().ok"]
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/${MONGO_DB} --quiet
       interval: 5s
       timeout: 3s
       retries: 10
       start_interval: 30s
+      start_period: 30s
 
   readme-users.mongo.ui:
     image: mongo-express:latest

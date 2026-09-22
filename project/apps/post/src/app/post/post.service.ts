@@ -46,7 +46,7 @@ export class PostService {
     const post = await this.postRepository.findById(id);
 
     if (!post) {
-      throw new Error('Post not found');
+      throw new NotFoundException('Post not found');
     }
 
     post.update(dto);

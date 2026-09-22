@@ -12,4 +12,4 @@ Content-Type: application/json
 ###
 
 # Удаление комментария
-DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd/comments/6a8aa59446a019ac22038648
+DELETE http://localhost:3300/api/post/6d308040-96a2-4162-bea6-2338e9976540/comments/c8b6e7e7-8f8d-4a8d-9a24-4a7c4a7c4a7c

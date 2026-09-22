@@ -19,7 +19,7 @@ GET http://localhost:3300/api/post
 ###
 GET http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 ###
-DELETE http://localhost:3300/api/post/6d308040-96a2-4162-bea6-2338e9976540
+DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 
 ###
 POST http://localhost:3300/api/post
@@ -53,10 +53,10 @@ Content-Type: application/json
 
 ###
 
-PATCH  http://localhost:3300/api/post/f014c400-12a4-4584-abd2-41ce3e62ac13
+PATCH  http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 Content-Type: application/json
 
 {
-  "link": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-  "description": "Тест"
+  "text": "Test",
+  "preview": "В этой публикации разберём основные возможности NestJS"
 }

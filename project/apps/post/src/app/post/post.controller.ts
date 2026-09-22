@@ -5,7 +5,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -16,7 +15,6 @@ import { CreatePostDTO } from './dto/create-dto.interface';
 import { UpdatePostDTO } from './dto/update-dto.interface';
 import { AUTHOR_ID } from './post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ParseMongoIdPipe } from '@project/core';
 
 @ApiTags('Post')
 @Controller('post')
