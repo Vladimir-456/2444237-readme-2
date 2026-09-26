@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { fillDTO } from '@project/helpers';
@@ -15,6 +16,7 @@ import { CreatePostDTO } from './dto/create-dto.interface';
 import { UpdatePostDTO } from './dto/update-dto.interface';
 import { AUTHOR_ID } from './post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PostQueryDto } from './dto/filter-dto.interface';
 
 @ApiTags('Post')
 @Controller('post')
@@ -23,8 +25,8 @@ export class PostController {
 
   @ApiResponse({ status: 200, type: [CreatePostRDO] })
   @Get('/')
-  async getPosts() {
-    return this.postService.getPosts();
+  async getPosts(@Query() query: PostQueryDto) {
+    return this.postService.getPosts(query);
   }
 
   @ApiResponse({ status: 201, type: CreatePostRDO })

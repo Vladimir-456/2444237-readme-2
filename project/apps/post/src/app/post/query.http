@@ -13,11 +13,9 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:3300/api/post
-
-
+GET http://localhost:3300/api/post?page=1&limit=25&sort=mostLiked
 ###
-GET http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
+GET http://localhost:3300/api/post/b915f92b-d452-425e-9e0d-a643eee24beb
 ###
 DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 

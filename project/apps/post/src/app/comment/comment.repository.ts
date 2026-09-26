@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 import { CommentInterface } from '@project/shared-types';
 import { PrismaClientService } from '@project/models';
 import { Injectable } from '@nestjs/common';
+import { QueryCommentDto } from './dto/query-comment';
 
 @Injectable()
 export class CommentRepository extends PrismaRepository<
@@ -31,11 +32,14 @@ export class CommentRepository extends PrismaRepository<
     return CommentEntity.fromPrisma(newComment);
   }
 
-  async getComments(postId: string) {
+  async getComments(postId: string, query: QueryCommentDto) {
     const comments = await this.model.findMany({
       where: {
         postId,
       },
+
+      skip: (query.page - 1) * query.limit,
+      take: query.limit,
     });
     return comments.map((comment) => CommentEntity.fromPrisma(comment));
   }

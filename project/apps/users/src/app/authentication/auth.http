@@ -10,6 +10,7 @@ Content-Type: application/json
 }
 ###
 
+
 # Login
 POST http://localhost:3300/api/auth/login
 Content-Type: application/json
@@ -22,4 +23,7 @@ Content-Type: application/json
 ###
 
 # Get User Data
-GET http://localhost:3300/api/auth/6a86f3b939a44737f9ff8b79
+GET http://localhost:3300/api/auth/6ab674d1dc9552ee2aee03c0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWI2NzRkMWRjOTU1MmVlMmFlZTAzYzAiLCJlbWFpbCI6InZsYWQuc3RhdnJvc0Biay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzkwNDMzNzQ4LCJleHAiOjE3OTA0MzQ2NDh9.OSrxCc-saZsxYS27CJ4N0lNXANcDccInOJ_VuW9mFK0
+
+###

@@ -5,7 +5,7 @@ import { LikeModule } from './like/like.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaClientModule } from '@project/models';
 import { applicationConfig } from '@project/config-users';
-const ENV_POST_FILE_PATH = 'apps/post/post.env';
+const ENV_POST_FILE_PATH = 'apps/post/post.env'
 
 @Module({
   imports: [

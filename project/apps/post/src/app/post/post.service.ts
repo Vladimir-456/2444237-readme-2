@@ -13,10 +13,13 @@ import {
   CreateVideoPostDto,
 } from './dto/create-dto.interface';
 import { PostEntity } from './post.entity';
-import { PostInterface, PostStatus, PostType } from '@project/shared-types';
+import {
+  PostInterface,
+  PostStatus,
+  PostType,
+} from '@project/shared-types';
 import { UpdatePostDTO } from './dto/update-dto.interface';
-import { Prisma } from '@prisma/client';
-type PrismaPost = Prisma.PostGetPayload<{}>;
+import { PostQueryDto } from './dto/filter-dto.interface';
 
 @Injectable()
 export class PostService {
@@ -26,8 +29,8 @@ export class PostService {
     return await this.postRepository.findById(id);
   }
 
-  public async getPosts() {
-    const posts = await this.postRepository.findAll();
+  public async getPosts(query: PostQueryDto) {
+    const posts = await this.postRepository.findAll(query);
 
     return posts.map((post) => post.toPOJO());
   }

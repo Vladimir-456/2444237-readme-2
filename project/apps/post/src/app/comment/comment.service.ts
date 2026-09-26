@@ -8,6 +8,7 @@ import { CommentEntity } from './comment.entity';
 import { CommentRepository } from './comment.repository';
 import { PostRepository } from '../post/post.repository';
 import { CreateCommentDto } from './dto/create-comment';
+import { QueryCommentDto } from './dto/query-comment';
 
 @Injectable()
 export class CommentService {
@@ -40,8 +41,8 @@ export class CommentService {
     return createdComment.toPOJO();
   }
 
-  async getComments(postId: string) {
-    const comments = await this.commentRepository.getComments(postId);
+  async getComments(postId: string, query: QueryCommentDto) {
+    const comments = await this.commentRepository.getComments(postId, query);
     return comments.map((comment) => comment.toPOJO());
   }
 

@@ -1,7 +1,6 @@
 import { PrismaRepository } from '@project/core';
 import { LikeEntity } from './like.entity';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { PrismaClient } from '@prisma/client';
 import { LikeInterface } from '@project/shared-types';
 import { PrismaClientService } from '@project/models';

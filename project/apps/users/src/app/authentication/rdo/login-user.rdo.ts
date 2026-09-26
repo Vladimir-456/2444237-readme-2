@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Token } from '@project/shared-types';
 import { Expose } from 'class-transformer';
 
 export class LoginUserRdo {
@@ -22,4 +23,7 @@ export class LoginUserRdo {
   })
   @Expose()
   name!: string;
+
+  @Expose()
+  accessToken!: string
 }
