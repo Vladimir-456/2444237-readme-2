@@ -1,7 +1,5 @@
 import { Entity } from '@project/core';
 import { CommentInterface } from '@project/shared-types';
-import { CommentDocument } from './comment.model';
-import { PrismaPost } from '../post/post.entity';
 import { Prisma } from '@prisma/client';
 
 type PrismaComment = Prisma.CommentGetPayload<{}>;

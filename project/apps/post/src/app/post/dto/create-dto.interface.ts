@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PostType } from '@project/shared-types';
-import { IsUrl, MaxLength, Min, MinLength } from 'class-validator';
+import { IsOptional, IsUrl, MaxLength, Min, MinLength } from 'class-validator';
+
 
 export class CreateLinkPostDto {
   @ApiProperty({
@@ -14,6 +15,7 @@ export class CreateLinkPostDto {
   public link!: string;
 
   @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @IsOptional()
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
   public tags?: string[];
 
@@ -29,6 +31,7 @@ export class CreatePhotoPostDto {
   public imageUrl!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
   @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @IsOptional()
   public tags?: string[];
 }
 
@@ -42,6 +45,7 @@ export class CreateQuotePostDto {
   public text!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
   @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @IsOptional()
   public tags?: string[];
 
   @MinLength(3, { message: 'Author must be at least 3 characters' })
@@ -60,6 +64,7 @@ export class CreateTextPostDto {
   public title!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
   @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @IsOptional()
   public tags?: string[];
 
   @MinLength(50, { message: 'Preview must be at least 50 characters' })
@@ -82,6 +87,7 @@ export class CreateVideoPostDto {
   @ApiProperty({ description: 'Post title', example: 'title' })
   public title!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
+  @IsOptional()
   public tags?: string[];
 
   @ApiProperty({ description: 'Post url', example: 'https://google.com' })

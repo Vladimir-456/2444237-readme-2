@@ -55,6 +55,17 @@ export class PostRepository extends PrismaRepository<
     return posts.map((post) => PostEntity.fromPrisma(post));
   }
 
+  async getPostTypeById (id: string) {
+    const postType = await this.model.findUnique({
+      where: {id},
+      select: {
+        typePost: true
+      }
+    })
+
+    return postType?.typePost
+  }
+
   private getOrderBy(sort: PostSort): Prisma.PostOrderByWithRelationInput[] {
     switch (sort) {
       case PostSort.MOST_LIKED:

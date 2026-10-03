@@ -1,14 +1,16 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 
 export class QueryCommentDto {
-  @IsInt()
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
-  page: number;
+  @Min(1)
+  page?: number = 1;
 
   @IsInt()
-  @IsOptional()
   @Type(() => Number)
-  limit: number;
+  @IsOptional()
+  @Min(0)
+  limit?: number = 50;
 }

@@ -4,14 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PostRepository } from './post.repository';
-import {
-  CreateLinkPostDto,
-  CreatePhotoPostDto,
-  CreatePostDTO,
-  CreateQuotePostDto,
-  CreateTextPostDto,
-  CreateVideoPostDto,
-} from './dto/create-dto.interface';
 import { PostEntity } from './post.entity';
 import {
   PostInterface,
@@ -20,6 +12,7 @@ import {
 } from '@project/shared-types';
 import { UpdatePostDTO } from './dto/update-dto.interface';
 import { PostQueryDto } from './dto/filter-dto.interface';
+import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from './dto/create-dto.interface';
 
 @Injectable()
 export class PostService {
@@ -56,6 +49,12 @@ export class PostService {
 
     const updatedPost = await this.postRepository.update(id, post);
     return updatedPost.toPOJO();
+  }
+
+  public async getPostTypeById (id: string) {
+    const result = await this.postRepository.getPostTypeById(id)
+    
+    return result
   }
 
   public async createPost(dto: CreatePostDTO, authorId: string) {
