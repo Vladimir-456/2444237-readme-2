@@ -1,13 +1,14 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CommentInterface } from '@project/shared-types';
 import { CommentEntity } from './comment.entity';
 import { CommentRepository } from './comment.repository';
 import { PostRepository } from '../post/post.repository';
 import { CreateCommentDto } from './dto/create-comment';
+import { QueryCommentDto } from './dto/query-comment';
 
 @Injectable()
 export class CommentService {
@@ -40,8 +41,19 @@ export class CommentService {
     return createdComment.toPOJO();
   }
 
-  async getComments(postId: string) {
-    const comments = await this.commentRepository.getComments(postId);
+  async getComments(postId: string, query: QueryCommentDto) {
+
+    if (!postId) {
+      throw new BadRequestException('PostId is required')
+    }
+
+    const post = await this.postRepository.findById(postId)
+
+    if (!post) {
+      throw new NotFoundException('Post not found')
+    }
+
+    const comments = await this.commentRepository.getComments(postId, query);
     return comments.map((comment) => comment.toPOJO());
   }
 
@@ -49,7 +61,7 @@ export class CommentService {
     const comment = await this.commentRepository.findById(commentId);
 
     if (!comment) {
-      throw new Error('Comment not found');
+      throw new NotFoundException('Comment not found');
     }
 
     const commentData = comment.toPOJO();

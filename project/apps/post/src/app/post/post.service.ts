@@ -4,19 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PostRepository } from './post.repository';
-import {
-  CreateLinkPostDto,
-  CreatePhotoPostDto,
-  CreatePostDTO,
-  CreateQuotePostDto,
-  CreateTextPostDto,
-  CreateVideoPostDto,
-} from './dto/create-dto.interface';
 import { PostEntity } from './post.entity';
-import { PostInterface, PostStatus, PostType } from '@project/shared-types';
+import {
+  PostInterface,
+  PostStatus,
+  PostType,
+} from '@project/shared-types';
 import { UpdatePostDTO } from './dto/update-dto.interface';
-import { Prisma } from '@prisma/client';
-type PrismaPost = Prisma.PostGetPayload<{}>;
+import { PostQueryDto } from './dto/filter-dto.interface';
+import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from './dto/create-dto.interface';
 
 @Injectable()
 export class PostService {
@@ -26,8 +22,8 @@ export class PostService {
     return await this.postRepository.findById(id);
   }
 
-  public async getPosts() {
-    const posts = await this.postRepository.findAll();
+  public async getPosts(query: PostQueryDto) {
+    const posts = await this.postRepository.findAll(query);
 
     return posts.map((post) => post.toPOJO());
   }
@@ -53,6 +49,12 @@ export class PostService {
 
     const updatedPost = await this.postRepository.update(id, post);
     return updatedPost.toPOJO();
+  }
+
+  public async getPostTypeById (id: string) {
+    const result = await this.postRepository.getPostTypeById(id)
+    
+    return result
   }
 
   public async createPost(dto: CreatePostDTO, authorId: string) {

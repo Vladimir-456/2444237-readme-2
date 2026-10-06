@@ -8,6 +8,12 @@ export enum PostType {
   LINK = 'LINK',
 }
 
+export enum PostSort {
+  NEWEST = 'NEWEST',
+  MOST_LIKED = 'mostLiked',
+  MOST_DISCUSSED = 'mostDiscussed',
+}
+
 export enum PostStatus {
   PUBLISHED = 'PUBLISHED',
   DRAFT = 'DRAFT',

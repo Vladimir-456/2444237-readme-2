@@ -3,7 +3,6 @@ import { LikeService } from './like.service';
 import { AUTHOR_ID } from '../post/post.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLikeRdo } from './rdo/create-like.rdo';
-import { ParseMongoIdPipe } from '@project/core';
 import { fillDTO } from '@project/helpers';
 
 @ApiTags('Likes')
@@ -13,14 +12,14 @@ export class LikeController {
 
   @ApiResponse({ status: 201, type: CreateLikeRdo })
   @Post()
-  async createLike(@Param('postId') postId: string) {
+  async createLike(@Param('postId', new ParseUUIDPipe()) postId: string) {
     const like = await this.likeService.createLike(postId, AUTHOR_ID);
     return fillDTO(CreateLikeRdo, like);
   }
 
   @ApiResponse({ status: 200 })
   @Delete()
-  async removeLike(@Param('postId') postId: string) {
+  async removeLike(@Param('postId', new ParseUUIDPipe()) postId: string) {
     const deletedLike = await this.likeService.removeLike(postId, AUTHOR_ID);
     return deletedLike;
   }
