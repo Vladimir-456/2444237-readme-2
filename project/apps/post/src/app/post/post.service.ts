@@ -57,7 +57,7 @@ export class PostService {
     return result
   }
 
-  public async createPost(dto: CreatePostDTO, authorId: string) {
+  public async createPost(dto: CreatePostDTO, authorId: string) : Promise<PostInterface>  {
     switch (dto.typePost) {
       case PostType.VIDEO:
         return this.createVideoPost(dto, authorId);
@@ -94,6 +94,7 @@ export class PostService {
     });
 
     const created = await this.postRepository.save(post);
+    
 
     return created.toPOJO();
   }

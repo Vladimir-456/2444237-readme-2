@@ -4,3 +4,4 @@ export * from './lib/repository/entity.interface';
 export * from './lib/pipes/mongo.pipes';
 export * from './lib/repository/prisma.repository';
 export * from './lib/pipes/post.dto.pipes'
+export * from './lib/decorators/current-user.decorator'

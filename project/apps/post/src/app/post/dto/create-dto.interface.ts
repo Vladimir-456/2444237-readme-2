@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PostType } from '@project/shared-types';
-import { IsOptional, IsUrl, MaxLength, Min, MinLength } from 'class-validator';
+import { IsOptional, IsString, IsUrl, MaxLength, Min, MinLength } from 'class-validator';
 
 
 export class CreateLinkPostDto {
@@ -14,7 +14,7 @@ export class CreateLinkPostDto {
   @IsUrl({}, { message: 'Invalid link' })
   public link!: string;
 
-  @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @MaxLength(7, { message: 'Title must be shorter than 7 tags' })
   @IsOptional()
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
   public tags?: string[];
@@ -27,10 +27,13 @@ export class CreateLinkPostDto {
 export class CreatePhotoPostDto {
   @ApiProperty({ description: 'Post type', example: PostType.PHOTO })
   readonly typePost = PostType.PHOTO;
+
   @ApiProperty({ description: 'Post image', example: 'image.jpg' })
+  @IsUrl({}, { message: 'Invalid url' })
   public imageUrl!: string;
+
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
-  @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @MaxLength(7, { message: 'Title must be shorter than 7 tags' })
   @IsOptional()
   public tags?: string[];
 }
@@ -44,7 +47,7 @@ export class CreateQuotePostDto {
   @ApiProperty({ description: 'Post text', example: 'text' })
   public text!: string;
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
-  @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @MaxLength(7, { message: 'Title must be shorter than 7 tags' })
   @IsOptional()
   public tags?: string[];
 
@@ -62,8 +65,9 @@ export class CreateTextPostDto {
   @MaxLength(50, { message: 'Title must be shorter than 50 characters' })
   @ApiProperty({ description: 'Post title', example: 'title' })
   public title!: string;
+
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
-  @MinLength(7, { message: 'Title must be shorter than 7 tags' })
+  @MaxLength(7, { message: 'Title must be shorter than 7 tags' })
   @IsOptional()
   public tags?: string[];
 
@@ -86,7 +90,9 @@ export class CreateVideoPostDto {
   @MaxLength(50, { message: 'Title must be shorter than 50 characters' })
   @ApiProperty({ description: 'Post title', example: 'title' })
   public title!: string;
+
   @ApiProperty({ description: 'Post tags', example: ['tag1', 'tag2'] })
+  @MaxLength(7, { message: 'Title must be shorter than 7 tags' })
   @IsOptional()
   public tags?: string[];
 

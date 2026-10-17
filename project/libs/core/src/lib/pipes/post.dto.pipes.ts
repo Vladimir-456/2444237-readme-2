@@ -54,7 +54,10 @@ export class PostDtoValidationPipe implements PipeTransform {
         throw new BadRequestException(`Invalid "typePost": ${typeValue}`);
     }
 
-    const instance = plainToInstance(dtoMap[typeValue], value);
+    const instance = plainToInstance(dtoMap[typeValue], value, {
+      excludeExtraneousValues: true
+    });
+    
     const errors = await validate(instance);
 
     if (errors.length > 0) {

@@ -8,6 +8,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
+  console.log('CWD:', process.cwd());
+  console.log('PORT:', process.env.PORT);
+  console.log('ENVIRONMENT:', process.env.ENVIRONMENT);
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

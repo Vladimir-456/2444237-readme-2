@@ -67,3 +67,11 @@ export type PostInterface =
   | PhotoPost
   | QuotePost
   | LinkPost;
+
+
+export type PostPublished = {
+  postId: string;
+  title: string;
+  authorId: string;
+  authorEmail: string;
+}

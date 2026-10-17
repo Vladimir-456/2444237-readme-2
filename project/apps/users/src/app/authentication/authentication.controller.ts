@@ -20,17 +20,29 @@ import { LoginUserRdo } from './rdo/login-user.rdo';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ParseMongoIdPipe } from '@project/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: AuthenticationService,  
+    private readonly notifyService: NotifyService,
+  ) {}
 
   @ApiOperation({ summary: 'Регистрация нового пользователя'})
   @ApiResponse({ status: 201, type: CreateUserRdo })
   @Post('/register')
   async register(@Body() dto: CreateUserDTO) {
     const newUser = await this.authenticationService.register(dto);
+
+    const { email, name } = newUser
+
+    // await this.notifyService.registerSubscriber({
+    //   email,
+    //   name
+    // })
+
     return fillDTO(CreateUserRdo, newUser);
   }
 
@@ -57,4 +69,5 @@ export class AuthenticationController {
 
     return fillDTO(CreateUserRdo, user);
   }
+
 }
