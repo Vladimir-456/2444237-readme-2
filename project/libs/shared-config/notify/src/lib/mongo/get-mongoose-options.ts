@@ -16,7 +16,6 @@ export function getMongooseOptions () : MongooseModuleAsyncOptions {
 
              const uri = getMongoConnectString(dbConfig);
 
-            console.log('Mongo URI:', uri.replace(dbConfig.password, '***'));
 
             return { uri };
         },

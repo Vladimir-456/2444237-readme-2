@@ -4,6 +4,8 @@ import { ConfigType } from "@nestjs/config";
 import { RabbitRouting } from "@project/notify";
 import { rabbitConfig } from "@project/shared-config";
 import { NotifyPostPublishedDto } from "./dto/notify.post.published.dto";
+import { NotifyNewPostsDto } from "./dto/notify.posts.published.dto";
+import { PostMailingCreatedDto } from "./dto/post-mailing.dto";
 
 @Injectable()
 export class NotifyService {
@@ -21,4 +23,27 @@ export class NotifyService {
         )
     }
 
+    async notifyPostMailingCreated (dto: PostMailingCreatedDto) {
+        await this.rabbitClient.publish(
+            this.rabbitOptions.exchange,
+            RabbitRouting.PostMailingCreated,
+            {...dto},
+            {
+                persistent: true,
+                contentType: 'application/json',
+            },
+        )
+    }
+
+    async notifyNewPosts (dto: NotifyNewPostsDto) {
+        await this.rabbitClient.publish(
+            this.rabbitOptions.exchange,
+            RabbitRouting.NotifyNewPostsPublished,
+            {...dto},
+            {
+                persistent: true,
+                contentType: 'application/json',
+            }
+        )
+    }
 }

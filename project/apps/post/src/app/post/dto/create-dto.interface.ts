@@ -20,6 +20,7 @@ export class CreateLinkPostDto {
   public tags?: string[];
 
   @MaxLength(300)
+  @MinLength(1)
   @ApiProperty({ description: 'Post description', example: 'description' })
   public description?: string;
 }

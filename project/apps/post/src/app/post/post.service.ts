@@ -18,6 +18,10 @@ import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDt
 export class PostService {
   constructor(private readonly postRepository: PostRepository) {}
 
+  // public async notifyNewPostsSinceLastDigest(): Promise<void> {
+
+  // }
+
   public async getPost(id: string) {
     return await this.postRepository.findById(id);
   }

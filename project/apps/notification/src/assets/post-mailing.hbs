@@ -1,0 +1,29 @@
+<h1>Новые публикации</h1>
+
+<p>Здравствуйте, {{ user }}!</p>
+
+{{#if posts.length}}
+  <ul>
+    {{#each posts}}
+      <li>
+        <a href="{{ this.url }}">
+          {{#if this.title}}
+            {{ this.title }}
+          {{else}}
+            Новая публикация
+          {{/if}}
+        </a>
+
+        {{#if this.description}}
+          <p>{{ this.description }}</p>
+        {{/if}}
+
+        {{#if this.imageUrl}}
+          <img src="{{ this.imageUrl }}" alt="{{ this.title }}" width="600" />
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>Новых публикаций пока нет.</p>
+{{/if}}

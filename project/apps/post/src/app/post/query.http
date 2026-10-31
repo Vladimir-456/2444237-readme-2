@@ -1,15 +1,11 @@
-POST http://localhost:3300/api/post
+POST http://localhost:3000/api/post
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWQxYzQxNTIzY2E5NGUyYjNmYjc2YjMiLCJlbWFpbCI6InZsYWRAYmsucnUiLCJuYW1lIjoiQWxleCIsImF2YXRhciI6ImltYWdlLnBuZyIsImlhdCI6MTc5MzI2MjE5MSwiZXhwIjoxNzkzMjYzMDkxfQ.A7pSgneChcLg2zmegpgfsbanewJ8eYcD7a6ZJ8-1Uw4
 Content-Type: application/json
 
 {
   "typePost": "VIDEO",
   "title": "Очень интересное видео о разработке",
-  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  "tags": [
-    "nestjs",
-    "typescript",
-    "backend"
-  ]
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
 ###
 
@@ -20,32 +16,27 @@ GET http://localhost:3300/api/post/b915f92b-d452-425e-9e0d-a643eee24beb
 DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 
 ###
-POST http://localhost:3300/api/post
+POST http://localhost:3000/api/post
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWQxYzQxNTIzY2E5NGUyYjNmYjc2YjMiLCJlbWFpbCI6InZsYWRAYmsucnUiLCJuYW1lIjoiQWxleCIsImF2YXRhciI6ImltYWdlLnBuZyIsImlhdCI6MTc5MzQzMTQ4NiwiZXhwIjoxNzkzNDMyMzg2fQ.hJzL9qeoPZ6kVe4hFdW42FMnHm-lTsodinveLbq7JjY
 Content-Type: application/json
 
 {
  "typePost": "TEXT",
  "title": "Как правильно изучать NestJS",
   "preview": "В этой публикации разберём основные возможности NestJS и архитектуру серверного приложения.",
-  "text": "NestJS предоставляет модульную архитектуру, dependency injection, контроллеры, providers, pipes, guards и interceptors. Благодаря этому приложение проще тестировать и расширять.",
-  "tags": [
-    "nestjs",
-    "nodejs"
-  ]
+  "text": "NestJS предоставляет модульную архитектуру, dependency injection, контроллеры, providers, pipes, guards и interceptors. Благодаря этому приложение проще тестировать и расширять."
 }
 
 ###
-POST http://localhost:3300/api/post
+POST http://localhost:3000/api/post
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWQxYzQxNTIzY2E5NGUyYjNmYjc2YjMiLCJlbWFpbCI6InZsYWRAYmsucnUiLCJuYW1lIjoiQWxleCIsImF2YXRhciI6ImltYWdlLnBuZyIsImlhdCI6MTc5MzAyNTE4MiwiZXhwIjoxNzkzMDI2MDgyfQ.ky4I-z-0Jgo41Mwu0sq1PBe1fsD2NwtOxCze4IfRgyE
 Content-Type: application/json
 
 {
   "typePost": "LINK",
-  "link": "https://nestjs.com",
-  "description": "Официальный сайт фреймворка NestJS",
-  "tags": [
-    "nestjs",
-    "documentation"
-  ]
+  "link": "https://docs.nestjs.com",
+  "description": "Официальная документация NestJS: руководство по созданию серверных приложений на Node.js.",
+  "tags": ["nestjs", "documentation", "backend"]
 }
 
 

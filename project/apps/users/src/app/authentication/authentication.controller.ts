@@ -38,10 +38,11 @@ export class AuthenticationController {
 
     const { email, name } = newUser
 
-    // await this.notifyService.registerSubscriber({
-    //   email,
-    //   name
-    // })
+    await this.notifyService.registerNewUser({
+      userId: newUser.id,
+      email,
+      name,
+    })
 
     return fillDTO(CreateUserRdo, newUser);
   }

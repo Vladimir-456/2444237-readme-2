@@ -12,6 +12,14 @@ export class UserController {
     ) {}
 
     @UseGuards(JwtAuthGuard)
+    @Post('notifications/newsletter')
+    async requestedNotifyLetter (
+        @CurrentUser() user: CurrentUserPayload,
+    ) {
+        await this.notifyService.requestNotifyLetter(user)
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Post(':authorId/subscribe')
     async subscribe(
     @Param('authorId') authorId: string,

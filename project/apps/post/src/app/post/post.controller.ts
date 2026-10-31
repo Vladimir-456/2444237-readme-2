@@ -102,7 +102,6 @@ export class PostController {
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Patch('/:id')
   async updatePost (@Param('id') id:  string, @Body() dto: UpdatePostDTO) {
-    console.log(id)
     const pipe = new PostDtoValidationPipe({
     createDto: {},
     updateDto: updateDtoMap,

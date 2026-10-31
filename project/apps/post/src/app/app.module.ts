@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaClientModule } from '@project/models';
 import { applicationConfig } from '@project/config-users';
 import { NotifyModule } from './notify/notify.module';
+import { PostMailingModule } from './post-mailing/post-mailing.module';
 const ENV_POST_FILE_PATH = 'apps/post/post.env'
 
 @Module({
@@ -15,6 +16,7 @@ const ENV_POST_FILE_PATH = 'apps/post/post.env'
       load: [applicationConfig],
       envFilePath: ENV_POST_FILE_PATH,
     }),
+    PostMailingModule,
     PostModule,
     CommentModule,
     NotifyModule,

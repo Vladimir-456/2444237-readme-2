@@ -1,9 +1,9 @@
 # Create a new user
-POST http://localhost:3000/api/auth/register
+POST http://localhost:3200/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "vlad5ffg12@bk.ru",
+  "email": "vlad5f6fg12@bk.ru",
   "password": "Strong123!",
   "name": "Alex",
   "avatar": "image.png"
