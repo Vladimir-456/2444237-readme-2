@@ -18,6 +18,10 @@ import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDt
 export class PostService {
   constructor(private readonly postRepository: PostRepository) {}
 
+  // public async notifyNewPostsSinceLastDigest(): Promise<void> {
+
+  // }
+
   public async getPost(id: string) {
     return await this.postRepository.findById(id);
   }
@@ -57,7 +61,7 @@ export class PostService {
     return result
   }
 
-  public async createPost(dto: CreatePostDTO, authorId: string) {
+  public async createPost(dto: CreatePostDTO, authorId: string) : Promise<PostInterface>  {
     switch (dto.typePost) {
       case PostType.VIDEO:
         return this.createVideoPost(dto, authorId);
@@ -94,6 +98,7 @@ export class PostService {
     });
 
     const created = await this.postRepository.save(post);
+    
 
     return created.toPOJO();
   }

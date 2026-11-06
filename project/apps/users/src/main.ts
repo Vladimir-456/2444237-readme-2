@@ -28,10 +28,10 @@ async function bootstrap() {
 
   const port = configService.get('application.port');
 
-  await app.listen(port);
+  await app.listen(3200);
 
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+    `🚀 Application is running on: http://localhost:3200/${globalPrefix}`,
   );
 }
 

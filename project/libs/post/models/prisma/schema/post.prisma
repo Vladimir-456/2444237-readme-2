@@ -37,6 +37,75 @@ model Post {
     description String?
     comments    Comment[]
     likes       Like[]
+    
+    digestPosts DigestPost[]
 
     @@map("posts")
+    postMailingItems PostMailingItem[]
+}
+
+enum PostMailingStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  SENT
+  FAILED
+  COMPLETED
+  CANCELLED
+}
+
+model PostMailing {
+  id          String            @id @default(uuid())
+  digestId    String
+  title       String
+  status      PostMailingStatus @default(PENDING)
+  createdBy   String
+  createdAt   DateTime          @default(now())
+  publishedAt DateTime?
+  sentAt      DateTime?
+
+  digest Digest            @relation(fields: [digestId], references: [id])
+  items  PostMailingItem[]
+
+  @@map("post_mailing")
+}
+
+model PostMailingItem {
+  id        String @id @default(uuid())
+  mailingId String
+  postId    String
+  position  Int    @default(0)
+
+  mailing PostMailing @relation(fields: [mailingId], references: [id], onDelete: Cascade)
+  post    Post        @relation(fields: [postId], references: [id])
+  digests Digest[]
+
+  @@unique([mailingId, postId])
+  @@index([mailingId, position])
+
+  @@map("post_mailing_items")
+}
+
+model Digest {
+    id String @id @default(uuid())
+    title String
+    createdAt DateTime @default(now())
+
+    posts DigestPost[]
+    postMailingItems PostMailingItem[]
+    postMailings PostMailing[]
+
+    @@map("digest")
+}
+
+model DigestPost {
+  id       String @id @default(uuid())
+  digestId String
+  postId   String
+
+  digest Digest @relation(fields: [digestId], references: [id], onDelete: Cascade)
+  post   Post   @relation(fields: [postId], references: [id])
+
+  @@unique([digestId, postId])
+  @@map("digest_post")
 }

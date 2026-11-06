@@ -4,6 +4,7 @@ export interface UserInterface {
   name: string;
   password: string;
   avatar?: string;
+  lastNewsletterSent?: Date;
 }
 
 export interface UserAvatarInterface {

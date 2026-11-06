@@ -19,7 +19,7 @@ export class MongoRepository<
       return null;
     }
 
-    return this.createEntity(document.toObject({ versionKey: false }));
+    return this.createEntity(document.toObject({ versionKey: false, virtuals: true }));
   }
 
   async findById(id: T['id']): Promise<T | null> {

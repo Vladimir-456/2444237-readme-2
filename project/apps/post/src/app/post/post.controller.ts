@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { fillDTO } from '@project/helpers';
@@ -17,8 +18,10 @@ import { UpdatePostDTO } from './dto/update-dto.interface';
 import { AUTHOR_ID, createDtoMap, updateDtoMap } from './post.constant';
 import { ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { PostQueryDto } from './dto/filter-dto.interface';
-import { PostDtoValidationPipe } from '@project/core'
+import { CurrentUser, CurrentUserPayload, PostDtoValidationPipe } from '@project/core'
 import { PostType } from '@project/shared-types';
+import { NotifyService } from '../notify/notify.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiExtraModels(
   CreateTextPostDto,
@@ -30,7 +33,11 @@ import { PostType } from '@project/shared-types';
 @ApiTags('Post')
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly notifyService: NotifyService
+  ) 
+  {}
 
   @ApiResponse({ status: 200, type: [CreatePostRDO] })
   @Get('/')
@@ -39,6 +46,7 @@ export class PostController {
   }
 
   @ApiResponse({ status: 201, type: CreatePostRDO })
+  @UseGuards(JwtAuthGuard)
   @Post('/')
   @ApiOperation({
     summary: 'Create a new post',
@@ -69,8 +77,18 @@ export class PostController {
       },
     },
   })
-  async createPost(@Body(new PostDtoValidationPipe({createDto: createDtoMap, updateDto: {}})) dto: CreatePostDTO) {
-    const created = await this.postService.createPost(dto, AUTHOR_ID);
+  async createPost(
+    @Body(new PostDtoValidationPipe({createDto: createDtoMap, updateDto: {}})) dto: CreatePostDTO,
+    @CurrentUser() user : CurrentUserPayload
+  ) {
+    const created = await this.postService.createPost(dto, user.id);
+
+    await this.notifyService.notifyPostPublished({
+      postId: created.id,
+      title: 'title' in created ? created.title : '',
+      authorId: created.authorId,
+      authorEmail: user.email,
+    })
 
     return fillDTO(CreatePostRDO, created);
   }
@@ -84,15 +102,12 @@ export class PostController {
   @ApiResponse({ status: 200, type: CreatePostRDO })
   @Patch('/:id')
   async updatePost (@Param('id') id:  string, @Body() dto: UpdatePostDTO) {
-    console.log(id)
     const pipe = new PostDtoValidationPipe({
     createDto: {},
     updateDto: updateDtoMap,
     getExistingPostType: (postId) => this.postService.getPostTypeById(postId) as Promise<string | null>,
     postId: id,
     });
-
-    console.log(dto)
 
     const validationDto = await pipe.transform(dto, {
       metatype: undefined,

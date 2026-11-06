@@ -3,3 +3,5 @@ export * from './lib/user.interface';
 export * from './lib/comments.interface';
 export * from './lib/like.interface';
 export * from './lib/token'
+export * from './lib/subscriber.interface'
+export * from './lib/mailing-post'

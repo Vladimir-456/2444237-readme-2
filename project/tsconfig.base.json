@@ -23,7 +23,9 @@
       "@project/config-users": [
         "./libs/shared-config/config-users/src/index.ts"
       ],
-      "@project/models": ["./libs/post/models/src/index.ts"]
+      "@project/models": ["./libs/post/models/src/index.ts"],
+      "@project/notify": ["./libs/shared-config/notify/src/index.ts"],
+      "@project/shared-config": ["./libs/shared-config/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

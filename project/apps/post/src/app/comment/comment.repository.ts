@@ -29,12 +29,8 @@ export class CommentRepository extends PrismaRepository<
   }
 
   async getComments(postId: string, query: QueryCommentDto) {
-    console.log(query)
     const page = query.page ?? 1;
     const limit = query.limit ?? 50
-
-    console.log(page)
-    console.log(limit)
 
     const comments = await this.model.findMany({
       where: {

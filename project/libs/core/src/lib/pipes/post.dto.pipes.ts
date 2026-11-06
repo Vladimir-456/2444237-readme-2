@@ -55,6 +55,7 @@ export class PostDtoValidationPipe implements PipeTransform {
     }
 
     const instance = plainToInstance(dtoMap[typeValue], value);
+    
     const errors = await validate(instance);
 
     if (errors.length > 0) {
