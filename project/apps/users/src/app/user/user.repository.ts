@@ -12,8 +12,31 @@ export class UserRepository extends MongoRepository<UserEntity, UserDocument> {
   ) {
     super(model, UserEntity.fromObject);
   }
+
+  public async getUserById (id: string) {
+    return this.model.findOne({_id: id}, {
+      id: 1,
+      createdAt: 1,
+      email: 1,
+      name: 1
+    })
+  }
+
   public async findByEmail(email: string): Promise<UserEntity | null> {
     const document = await this.model.findOne({ email }).exec();
     return document ? this.createDocument(document) : null;
+  }
+
+  public async updatePassword(userId: string, passwordHash: string) {
+    const result = await this.model.updateOne(
+      {_id: userId},
+      {
+        $set: {
+          password: passwordHash
+        }
+      }
+    ).exec()
+
+    return result.modifiedCount > 0;
   }
 }

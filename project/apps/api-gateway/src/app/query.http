@@ -1,0 +1,68 @@
+POST http://localhost:3300/api/users/login
+Content-Type: application/json
+
+{
+    "email": "vlad@bk.ru",
+    "password": "volume34"
+}
+
+###
+POST http://localhost:3300/api/users/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwidG9rZW5JZCI6ImU0MjkxNzRmLTk5MzItNDkyZS05YjQ0LWQzN2YxZTFlMmZiMSIsImlhdCI6MTc5NDU4Mjg3MywiZXhwIjoxNzk1NDQ2ODczfQ.kPpM4GjFbRufa02C1FR0yRkgf4ntFanCbQ506aL2_oc
+###
+POST http://localhost:3300/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjcxNjk0LCJleHAiOjE3OTQ2NzI1OTR9.hNhaE8zfP9LEApOxWOFtB0gAOu1hBkhoAz1saHgzBxM
+Content-Type: application/json
+
+{
+  "typePost": "VIDEO",
+  "title": "Очень интересное видео о разработке",
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+###
+
+POST http://localhost:3300/api/users/check
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0Mzc3MDAwLCJleHAiOjE3OTQzNzc5MDB9.CjAzsMyyemoLofSqzWlj-xtNKTd4kEcCOstVh99BJ-k
+###
+
+GET http://localhost:3300/api/users/6ad1c41523ca94e2b3fb76b3
+Authorization: Bearer eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjYzNjE5LCJleHAiOjE3OTQ2NjQ1MTl9.UW8hUuXk7tytovGC_q2KRzowrLb0iH28MEjUcJBDhKs
+###
+POST http://localhost:3300/api/comments/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjY0NzA4LCJleHAiOjE3OTQ2NjU2MDh9.G7DSqicRf_wn8Im1nDzcInLiD_n3nHoI4i0Hr57morY
+
+{
+  "text": "Test!!!sddsfgdfg"
+}
+
+###
+POST http://localhost:3300/api/likes/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjcxNjk0LCJleHAiOjE3OTQ2NzI1OTR9.hNhaE8zfP9LEApOxWOFtB0gAOu1hBkhoAz1saHgzBxM
+###
+
+###
+
+POST http://localhost:3300/api/posts/027d96d0-ef37-4354-8f5c-0ea043f0cf36/repost
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NzU2NTQ5LCJleHAiOjE3OTQ3NTc0NDl9.ZQFgapt5ZQlUdgb6-n4byjkiXzTuVUKcxWa5MTD804A
+
+###
+
+DELETE http://localhost:3300/api/likes/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjcxNjk0LCJleHAiOjE3OTQ2NzI1OTR9.hNhaE8zfP9LEApOxWOFtB0gAOu1hBkhoAz1saHgzBxM
+###
+GET http://localhost:3300/api/comments/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+###
+
+###
+DELETE http://localhost:3300/api/comments/01ce1815-d508-4fa2-b1e1-a86e4c37054f/7fa15cc5-07a3-485a-94b4-d237324e691e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjY2MzEwLCJleHAiOjE3OTQ2NjcyMTB9._yV41TNIJNVHMzHZn0DM59GXj1wV-wtVP9J0bgkXpew
+
+GET http://localhost:3300/api/comments
+
+###
+
+GET http://localhost:3300/api/posts/e0224746-7d18-4df0-96ce-6a67b170efe5
+###
+DELETE http://localhost:3300/api/posts/027d96d0-ef37-4354-8f5c-0ea043f0cf36
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0Mzc3MDAwLCJleHAiOjE3OTQzNzc5MDB9.CjAzsMyyemoLofSqzWlj-xtNKTd4kEcCOstVh99BJ-k

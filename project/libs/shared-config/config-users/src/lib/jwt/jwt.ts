@@ -5,6 +5,12 @@ export class JwtConfig {
   accessTokenSecret: string;
   @IsString({ message: 'JWT expiresIn must be a string' })
   accessExpiresIn: string;
+
+  @IsString({ message: 'Refresh JWT secret must be a string' })
+  refreshTokenSecret: string;
+
+  @IsString({ message: 'Refresh JWT expiresIn must be a string' })
+  refreshExpiresIn: string;
   
   async validate(): Promise<void> {
     await validateOrReject(this);

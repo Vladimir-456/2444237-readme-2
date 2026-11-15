@@ -5,6 +5,7 @@ import { UserModel, UserSchema } from './user.model';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { NotifyModule } from '../notify/notify.module';
+import { RefreshTokenModule } from '../refresh/refresh.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { NotifyModule } from '../notify/notify.module';
         schema: UserSchema,
       },
     ]),
-    NotifyModule
+    NotifyModule,
+    RefreshTokenModule
   ],
   controllers: [UserController],
   providers: [UserRepository, UserService],

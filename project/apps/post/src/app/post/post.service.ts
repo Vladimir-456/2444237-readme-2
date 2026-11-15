@@ -1,26 +1,30 @@
 import {
   BadRequestException,
+  ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PostRepository } from './post.repository';
 import { PostEntity } from './post.entity';
 import {
+  CreateLinkPostDto,
+  CreatePhotoPostDto,
+  CreatePostData,
+  CreatePostDTO,
+  CreateQuotePostDto,
+  CreateTextPostDto,
+  CreateVideoPostDto,
   PostInterface,
+  PostQueryDto,
   PostStatus,
   PostType,
+  UpdatePostDTO,
 } from '@project/shared-types';
-import { UpdatePostDTO } from './dto/update-dto.interface';
-import { PostQueryDto } from './dto/filter-dto.interface';
-import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from './dto/create-dto.interface';
 
 @Injectable()
 export class PostService {
   constructor(private readonly postRepository: PostRepository) {}
-
-  // public async notifyNewPostsSinceLastDigest(): Promise<void> {
-
-  // }
 
   public async getPost(id: string) {
     return await this.postRepository.findById(id);
@@ -32,26 +36,80 @@ export class PostService {
     return posts.map((post) => post.toPOJO());
   }
 
-  public async deletePost(id: string) {
-    const post = await this.postRepository.findById(id);
+  public async deletePost(post_id: string, user_id: string) {
+    const post = await this.postRepository.findById(post_id);
 
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    return await this.postRepository.delete(id);
+    if (post.toPOJO().authorId !== user_id) {
+      throw new ForbiddenException('You can only modify your own posts')
+    }
+
+    return await this.postRepository.delete(post_id);
   }
 
-  async updatePost(id: string, dto: UpdatePostDTO) {
-    const post = await this.postRepository.findById(id);
+  async getCountPostByUser (authorId: string) {
+    const count = await this.postRepository.getCountPostByUser(authorId)
+    return {
+      postsCount: count
+    }
+  }
+
+    async repost(postId: string, userId: string) {
+    const originalPost = await this.postRepository.findById(postId);
+
+    if (!originalPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const original = originalPost.toPOJO();
+
+    if (original.authorId === userId) {
+      throw new BadRequestException('You cannot repost your own post');
+    }
+
+    const existingRepost = await this.postRepository.findByOriginalPostId(postId);
+
+    if (existingRepost) {
+      throw new ConflictException('Post has already been reposted');
+    }
+
+    const {
+      id,
+      comments,
+      createdAt,
+      updatedAt,
+      ...repostData
+    } = original;
+
+    return this.postRepository.createRepost({
+      ...repostData,
+      authorId: userId,
+      isRepost: true,
+      updatedAt: new Date(),
+      originalPostId: original.id,
+      originalAuthorId: original.authorId,
+      createdAt: new Date(),
+    });
+  }
+
+  async updatePost(post_id: string, dto: UpdatePostDTO, user_id: string ) {
+    const post = await this.postRepository.findById(post_id);
 
     if (!post) {
       throw new NotFoundException('Post not found');
+    }
+
+    if (post.toPOJO().authorId !== user_id) {
+      throw new ForbiddenException('You can only modify your own posts')
     }
 
     post.update(dto);
 
-    const updatedPost = await this.postRepository.update(id, post);
+    const updatedPost = await this.postRepository.update(post_id, post);
+
     return updatedPost.toPOJO();
   }
 

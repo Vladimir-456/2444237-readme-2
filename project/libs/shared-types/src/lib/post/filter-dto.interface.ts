@@ -1,6 +1,6 @@
-import { PostSort } from '@project/shared-types';
 import { Expose, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { PostSort } from '../post.interface';
 
 export class PostQueryDto {
   @IsOptional()

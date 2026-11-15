@@ -11,6 +11,7 @@ export class PostMailingRepository {
     async createAndSendDigest(adminId: string) {
         const posts = await this.prisma.post.findMany({
         where: {
+            status: 'PUBLISHED',
             digestPosts: {
                 none: {},
             },

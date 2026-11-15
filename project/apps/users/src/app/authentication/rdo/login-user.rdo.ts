@@ -30,4 +30,7 @@ export class LoginUserRdo {
   })
   @Expose()
   accessToken!: string
+
+  @Expose()
+  refreshToken!: string
 }

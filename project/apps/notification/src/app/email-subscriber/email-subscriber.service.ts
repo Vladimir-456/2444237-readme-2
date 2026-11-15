@@ -22,4 +22,8 @@ export class EmailSubscriberService {
     async findByAuthorId(authorId: string): Promise<Subscriber[]> {
         return this.emailSubscriberRepository.findByAuthorId(authorId);
     }
+
+    async countByAuthorId(authorId: string) {
+        return this.emailSubscriberRepository.countByAuthorId(authorId);
+    }
 }

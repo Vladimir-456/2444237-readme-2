@@ -4,3 +4,5 @@ export interface CommentInterface {
   author: string;
   postId: string;
 }
+
+

@@ -28,6 +28,8 @@ interface BasePost {
   updatedAt: Date;
   publishDate: Date;
   isRepost: boolean;
+  originalPostId?: string;
+  originalAuthorId?: string;
   comments?: CommentInterface[];
 }
 
@@ -68,6 +70,9 @@ export type PostInterface =
   | QuotePost
   | LinkPost;
 
+export type DistributiveOmit<T,K extends PropertyKey> = T extends any ? Omit<T, K> : never;
+
+export type CreatePostData = DistributiveOmit<PostInterface, 'id' | 'comments' | 'likes'>
 
 export type PostPublished = {
   postId: string;

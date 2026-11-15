@@ -1,10 +1,9 @@
 import { PostStatus, Prisma, PrismaClient } from '@prisma/client';
 import { PostEntity } from './post.entity';
 import { PrismaRepository } from '@project/core';
-import { PostInterface, PostSort } from '@project/shared-types';
+import { CreatePostData, PostInterface, PostQueryDto, PostSort } from '@project/shared-types';
 import { PrismaClientService } from '@project/models';
 import { Injectable } from '@nestjs/common';
-import { PostQueryDto } from './dto/filter-dto.interface';
 
 @Injectable()
 export class PostRepository extends PrismaRepository<
@@ -13,7 +12,7 @@ export class PostRepository extends PrismaRepository<
   PostInterface
 > {
   constructor(prisma: PrismaClientService) {
-    super(prisma.post, (data) => PostEntity.fromPrisma(data));
+    super(prisma.post, (data) => PostEntity.fromCreatedfromPrisma(data));
   }
 
   async findAll(query: PostQueryDto): Promise<PostEntity[]> {
@@ -40,6 +39,8 @@ export class PostRepository extends PrismaRepository<
         imageUrl: true,
         link: true,
         description: true,
+        originalPostId: true,
+        originalAuthorId: true,
 
         _count: {
           select: {
@@ -55,6 +56,22 @@ export class PostRepository extends PrismaRepository<
     return posts.map((post) => PostEntity.fromPrisma(post));
   }
 
+  async getCountPostByUser (authorId: string) {
+    return this.model.count({
+      where: {
+        authorId,
+      },
+    });
+  }
+
+  async findByOriginalPostId (postId: string) {
+    return this.model.findUnique({
+      where: {
+        originalPostId: postId
+      }
+    })
+  }
+
   async getPostTypeById (id: string) {
     const postType = await this.model.findUnique({
       where: {id},
@@ -64,6 +81,15 @@ export class PostRepository extends PrismaRepository<
     })
 
     return postType?.typePost
+  }
+
+  async createRepost(data: CreatePostData) {
+    console.log('CREATE REPOST DATA:', data);
+    const post = await this.model.create({
+      data,
+    });
+
+    return PostEntity.fromCreatedfromPrisma(post)
   }
 
   private getOrderBy(sort: PostSort): Prisma.PostOrderByWithRelationInput[] {
