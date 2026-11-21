@@ -5,8 +5,11 @@ import { UserRepository } from "./user.repository";
 export class UserService {
     constructor (private readonly userRepository: UserRepository) {}
 
-    async getUser (userId: string) {
-        return await this.userRepository.findById(userId)
+    async getUser (userId: string | string[]) {
+        if (typeof userId === 'string') {
+            return await this.userRepository.findById(userId)
+        }
+        return await this.userRepository.findByIds(userId)
     }
 
 }

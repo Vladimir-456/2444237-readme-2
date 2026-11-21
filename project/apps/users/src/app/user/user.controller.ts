@@ -1,4 +1,4 @@
-import { Controller, Param, ParseUUIDPipe, Post, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, ParseUUIDPipe, Post, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { NotifyService } from "../notify/notify.service";
 import { CurrentUser, CurrentUserPayload } from '@project/core'
@@ -19,6 +19,15 @@ export class UserController {
         await this.notifyService.requestNotifyLetter(user)
     }
 
+    @Get('bulk')
+    async findByIds(
+        @Query('ids') ids: string
+    ) {
+        const userIds = ids.split(',')
+        console.log(userIds)
+        return this.userService.getUser(userIds);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Post(':authorId/subscribe')
     async subscribe(
@@ -33,4 +42,5 @@ export class UserController {
 
     return { success: true };
     }
+
 }

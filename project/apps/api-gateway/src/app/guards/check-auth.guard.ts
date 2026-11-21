@@ -1,5 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ApplicationServiceURL } from "../app.config";
 import { Request } from 'express'
 
@@ -10,7 +10,13 @@ export class CheckAuthGuard implements CanActivate {
     ) {}
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest<Request>();
-             const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/check`, null, {
+        const authorization = request.headers['authorization']
+
+        if (!authorization) {
+            throw new UnauthorizedException('Authorization header is missing')
+        }
+
+        const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/check`, null, {
                 headers: {
                     'Authorization': request.headers['authorization']
             }

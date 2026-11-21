@@ -13,5 +13,5 @@
   },
   "include": [
     "src/**/*.ts"
-  ]
+, "../../libs/shared-types/src/lib/users/reset-password.dto.ts", "../../libs/shared-types/src/lib/users/login-user.rdo.ts", "../../libs/shared-types/src/lib/users/create-user.rdo.ts", "../../libs/shared-types/src/lib/users/login-user.dto.ts"  ]
 }

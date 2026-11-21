@@ -9,5 +9,5 @@
     "target": "es2021",
     "moduleResolution": "node"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "../../libs/shared-types/src/lib/post/create-post.rdo.ts", "../../libs/shared-types/src/lib/post/create-like.rdo.ts", "../../libs/shared-types/src/lib/comments/comment.rdo.ts"]
 }

@@ -39,4 +39,17 @@ export class UserRepository extends MongoRepository<UserEntity, UserDocument> {
 
     return result.modifiedCount > 0;
   }
+
+  async findByIds (userIds: string[]) {
+    const documents = await this.model.find(
+      {_id: {$in: userIds}},
+      {
+        id: 1,
+        createdAt: 1,
+        email: 1,
+        name: 1,
+      },
+    )
+    return documents.map((document) => this.createDocument(document))
+  }
 }

@@ -65,7 +65,7 @@ export class PostRepository extends PrismaRepository<
   }
 
   async findByOriginalPostId (postId: string) {
-    return this.model.findUnique({
+    return this.model.findFirst({
       where: {
         originalPostId: postId
       }

@@ -11,17 +11,14 @@ import {
 } from '@nestjs/common';
 import { StringValue } from 'ms';
 import { UserRepository } from '../user/user.repository';
-import { CreateUserDTO } from './dto/create-user.dto';
 import { UserEntity } from '../user/user.entity';
-import { LoginUserDTO } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { UserInterface, TokenPayload, Token } from '@project/shared-types';
+import { UserInterface, TokenPayload, Token, LoginUserDTO, CreateUserDTO } from '@project/shared-types';
 import { jwtConfig } from '@project/config-users';
 import { ConfigType } from '@nestjs/config';
 import { RefreshTokenService } from '../refresh/refresh.service';
 import { createJwtPayload } from '@project/helpers';
 import { Request } from 'express';
-import { compare, hash } from 'bcrypt'
 
 @Injectable()
 export class AuthenticationService {
@@ -53,7 +50,9 @@ export class AuthenticationService {
       id: crypto.randomUUID(),
     }).setPassword(password);
 
-    return (await this.userRepository.save(userEntity)).toPOJO();
+    const created = await this.userRepository.save(userEntity)
+
+    return created.toPOJO()
   }
 
   public async resetPassword (user: TokenPayload, currentPassword: string, newPassword: string) {
@@ -101,11 +100,16 @@ export class AuthenticationService {
       throw new UnauthorizedException('Missing token')
     }
 
-    const token = authHeader.replace('Bearer ', '').trim();
+    try {
+      const token = authHeader.replace('Bearer ', '').trim();
 
-    return this.jwtService.verifyAsync(token, {
-      secret: this.jwtOptions.accessTokenSecret,
-    })
+      return this.jwtService.verifyAsync(token, {
+        secret: this.jwtOptions.accessTokenSecret,
+      })
+
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
   }
 
   public async getUserByEmail(email: string) {
@@ -120,13 +124,7 @@ export class AuthenticationService {
       const accessToken = await this.generateAccessToken(payload)
       const refreshToken = await this.generateRefreshToken(refreshTokenPayload)
 
-      const result = await this.refreshTokenService.createRefreshSession(refreshTokenPayload)
-
-      const test = await this.refreshTokenService.isExists(result.tokenId)
-
-      console.log(test)
-
-      console.log(result)
+      await this.refreshTokenService.createRefreshSession(refreshTokenPayload)
 
       return { accessToken, refreshToken }
     }
