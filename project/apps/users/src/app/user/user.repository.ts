@@ -1,5 +1,5 @@
 import { MongoRepository } from '@project/core';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UserDocument, UserModel } from './user.model';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,6 +11,23 @@ export class UserRepository extends MongoRepository<UserEntity, UserDocument> {
     @InjectModel(UserModel.name) protected readonly model: Model<UserDocument>,
   ) {
     super(model, UserEntity.fromObject);
+  }
+
+  public async updateUserAvatar(userId: string, avatarPath: string) {
+    const updated = await this.model.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          avatar: avatarPath,
+        }
+      },
+    )
+
+    if (!updated) {
+      throw new NotFoundException('Пользователь не найден');
+    }
+
+    return updated;
   }
 
   public async getUserById (id: string) {

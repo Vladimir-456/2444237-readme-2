@@ -1,6 +1,10 @@
-POST "users/6ddbfb434df3efd3/avatar"
-Content-Type: multipart/form-data
 
-{
+POST http://localhost:3000/api/users/6ad1c41523ca94e2b3fb76b3/avatar
+Content-Type: multipart/form-data; boundary=AvatarBoundary
 
-}
+--AvatarBoundary
+Content-Disposition: form-data; name="file"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./avatar.jpg
+--AvatarBoundary--

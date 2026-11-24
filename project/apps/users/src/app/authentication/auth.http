@@ -3,13 +3,16 @@ POST http://localhost:3200/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "vlad5f6fg12@bk.ru",
+  "email": "lev_i3412@mail.ru",
   "password": "Strong123!",
-  "name": "Alex",
+  "name": "Lev",
   "avatar": "image.png"
 }
 ###
 
+POST http://localhost:3200/api/auth/check
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NTg4NjI3LCJleHAiOjE3OTQ1ODk1Mjd9.69r7cZgD_sccXfXS3vbFL9jyPm-gQQEfqUjyqlRXxp0
+###
 POST http://localhost:3200/api/auth/reset
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NTg4NjI3LCJleHAiOjE3OTQ1ODk1Mjd9.69r7cZgD_sccXfXS3vbFL9jyPm-gQQEfqUjyqlRXxp0
 Content-Type: application/json

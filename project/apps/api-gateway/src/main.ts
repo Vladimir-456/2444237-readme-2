@@ -17,6 +17,14 @@ async function bootstrap() {
   .setTitle('API Gateway')
   .setDescription('API')
   .setVersion('1.0')
+  .addBearerAuth({
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+    description: 'JWT access token',
+  },
+  'access-token'
+  )
   .build()
 
   app.setGlobalPrefix(globalPrefix);

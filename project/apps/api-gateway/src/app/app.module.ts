@@ -10,6 +10,7 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
 import { PostController } from './post.controller';
 import { CommentsController } from './comments.controller';
 import { LikesController } from './likes.controller';
+import { AdminController } from './admin.controller';
 @Module({
   imports: 
   [JwtModule.registerAsync(
@@ -23,7 +24,7 @@ import { LikesController } from './likes.controller';
     load: [jwtConfig],
     envFilePath: 'apps/api-gateway/api-gateway.env',
   })],
-  controllers: [UsersController, PostController, CommentsController, LikesController],
+  controllers: [UsersController, PostController, CommentsController, LikesController, AdminController],
   providers: [JwtAccessStrategy, CheckAuthGuard],
 })
 export class AppModule {}

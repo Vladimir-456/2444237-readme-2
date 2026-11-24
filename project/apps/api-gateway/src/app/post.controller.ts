@@ -102,8 +102,7 @@ export class PostController {
 
         return data;
     }
-
-    @UseGuards(JwtAuthGuard, CheckAuthGuard)
+    
     @Get('/')
     @ApiOperation({
         summary: 'Получение всех постов',

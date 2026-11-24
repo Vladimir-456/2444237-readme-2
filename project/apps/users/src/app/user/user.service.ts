@@ -5,6 +5,10 @@ import { UserRepository } from "./user.repository";
 export class UserService {
     constructor (private readonly userRepository: UserRepository) {}
 
+    async updateAvatar(userId: string, avatarPath: string) {
+        return this.userRepository.updateUserAvatar(userId, avatarPath)
+    }
+
     async getUser (userId: string | string[]) {
         if (typeof userId === 'string') {
             return await this.userRepository.findById(userId)

@@ -64,10 +64,11 @@ export class PostRepository extends PrismaRepository<
     });
   }
 
-  async findByOriginalPostId (postId: string) {
+  async findByOriginalPostId (postId: string, userId: string) {
     return this.model.findFirst({
       where: {
-        originalPostId: postId
+        originalPostId: postId,
+        authorId: userId,
       }
     })
   }
@@ -84,7 +85,6 @@ export class PostRepository extends PrismaRepository<
   }
 
   async createRepost(data: CreatePostData) {
-    console.log('CREATE REPOST DATA:', data);
     const post = await this.model.create({
       data,
     });

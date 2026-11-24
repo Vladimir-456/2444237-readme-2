@@ -70,7 +70,7 @@ export class PostService {
       throw new BadRequestException('You cannot repost your own post');
     }
 
-    const existingRepost = await this.postRepository.findByOriginalPostId(postId);
+    const existingRepost = await this.postRepository.findByOriginalPostId(postId, userId);
 
     if (existingRepost) {
       throw new ConflictException('Post has already been reposted');
