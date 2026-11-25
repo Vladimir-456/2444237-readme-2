@@ -11,6 +11,7 @@ export * from './lib/post/post.constants';
 export * from './lib/post/create-like.rdo';
 export * from './lib/post/update-dto.interface';
 export * from './lib/post/create-post.rdo';
+export * from './lib/post/searh-post.rdo';
 export * from './lib/post/post-with-author.rdo';
 export * from './lib/comments/create-comment.dto'
 export * from './lib/comments/query-comment.dto'

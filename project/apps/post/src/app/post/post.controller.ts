@@ -50,6 +50,14 @@ export class PostController {
     return fillDTO(CreatePostRDO, created);
   }
 
+  @Get('/search')
+  async search (
+    @Query() query: { title: string }
+  ) {
+    console.log(query.title)
+    return this.postService.searchPost(query.title)
+  }
+
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async deletePost(@CurrentUser() user: CurrentUserPayload, @Param('id') id: string) {

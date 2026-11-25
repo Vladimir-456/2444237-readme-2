@@ -131,7 +131,7 @@ export class UsersController {
     @Req() req: Request,
   ) {
     const { data } = await this.httpService.axiosRef.post(
-      `${ApplicationServiceURL.Auth}/${userId}/subscribe`,
+      `${ApplicationServiceURL.User}/${userId}/subscribe`,
       null,
       {
         headers: {
@@ -192,7 +192,7 @@ export class UsersController {
     'file', {
       storage: memoryStorage(),
        limits: {
-          fileSize: 5 * 1024 * 1024,
+          fileSize: 5 * 1024,
           files: 1,
         },
     }
@@ -238,29 +238,25 @@ export class UsersController {
   );
 
   return updatedUser;
-} catch (error) {
-  if (axios.isAxiosError(error)) {
-    console.error('USERS SERVICE ERROR:', {
-      status: error.response?.status,
-      data: error.response?.data,
-      url: error.config?.url,
-    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('USERS SERVICE ERROR:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        url: error.config?.url,
+      });
 
-    const status = error.response?.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
-    const data = error.response?.data;
+      const status = error.response?.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
+      const data = error.response?.data;
 
-    throw new HttpException(
-      data?.message ?? 'Не удалось обновить аватар пользователя',
-      status,
-    );
-  }
-
-  throw error;
-}
-
+      throw new HttpException(
+        data?.message ?? 'Не удалось обновить аватар пользователя',
+        status,
+      );
+    }
     
-
-    // return updatedUser;
+    throw error;
+  }
   }
 
   @ApiOperation({

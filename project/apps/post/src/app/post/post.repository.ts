@@ -1,4 +1,4 @@
-import { PostStatus, Prisma, PrismaClient } from '@prisma/client';
+import { PostStatus, PostType, Prisma, PrismaClient } from '@prisma/client';
 import { PostEntity } from './post.entity';
 import { PrismaRepository } from '@project/core';
 import { CreatePostData, PostInterface, PostQueryDto, PostSort } from '@project/shared-types';
@@ -15,12 +15,70 @@ export class PostRepository extends PrismaRepository<
     super(prisma.post, (data) => PostEntity.fromCreatedfromPrisma(data));
   }
 
-  async findAll(query: PostQueryDto): Promise<PostEntity[]> {
-    const { page = 1, limit = 25, sort = PostSort.NEWEST } = query;
+  async findByTitle(title: string) {
+    const words = title.toLowerCase().split(/\s+/).filter(Boolean);
+    const where = {
+      status: PostStatus.PUBLISHED,
+      title: {
+        notIn: ['', ' '],
+      },
+      OR: words.map((word) => ({
+        title: {
+          contains: word,
+          mode: 'insensitive' as const,
+        },
+      })),
+};
+
+const [documents, total] = await Promise.all([
+    this.model.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+    }),
+    this.model.count({ where }),
+  ]);
+
+  return {
+    total,
+    items: documents,
+  };
+}
+
+  async findAll(query: PostQueryDto, currentUserId?: string,): Promise<PostEntity[]> {
+    const {
+    page = 1,
+    limit = 25,
+    sort = PostSort.NEWEST,
+    type,
+    tag,
+    draft,
+  } = query;
     const skip = (page - 1) * limit;
 
+    const where: Prisma.PostWhereInput = {
+      status: PostStatus.PUBLISHED,
+    }
+
+    if (type) {
+      where.typePost = type as PostType;
+    }
+
+    if (tag) {
+      where.tags = {
+        has: tag,
+      };
+    }
+
+    if (draft) {
+      where.status = PostStatus.DRAFT;
+      where.authorId = currentUserId;
+    }
+
     const posts = await this.model.findMany({
-      where: { status: PostStatus.PUBLISHED },
+      where: where,
       select: {
         id: true,
         authorId: true,

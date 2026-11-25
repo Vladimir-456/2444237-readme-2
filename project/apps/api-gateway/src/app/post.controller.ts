@@ -4,9 +4,9 @@ import { ApplicationServiceURL } from "./app.config";
 import { CheckAuthGuard } from "./guards/check-auth.guard";
 import { UserIdInterceptor } from "./interceptors/user-id.interceptor";
 import { AxiosExceptionFilter } from "./filters/axios-exception.filter";
-import { createDtoMap, CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreatePostRDO, CreatePostWithUserRDO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto, PostInterface, PostQueryDto, PostType, UpdatePostDTO, UserInterface } from "@project/shared-types";
+import { createDtoMap, CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreatePostRDO, CreatePostWithUserRDO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto, PostInterface, PostQueryDto, PostType, SearchPostRdo, UpdatePostDTO, UserInterface } from "@project/shared-types";
 import {PostDtoValidationPipe} from "@project/core"
-import { Request } from 'express'
+import { query, Request } from 'express'
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiExtraModels, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
 
@@ -101,6 +101,28 @@ export class PostController {
         );
 
         return data;
+    }
+
+    @Get('/search')
+    @ApiOperation({
+        summary: 'Поиск постов по названию',
+        description: 'Вернет все посты с данным названием',
+    })
+    @ApiQuery({
+        type: PostQueryDto,
+    })
+    @ApiOkResponse({
+        description: 'Посты с данным названием',
+        type: SearchPostRdo,
+    })
+    async searchPost (
+        @Query() query: { title: string }
+     ) {
+        const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Post}/search`, {
+            params: query
+        })
+
+        return data
     }
     
     @Get('/')

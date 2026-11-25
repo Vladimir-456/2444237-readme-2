@@ -36,6 +36,13 @@ export class PostService {
     return posts.map((post) => post.toPOJO());
   }
 
+  public async searchPost(title: string) {
+    if (!title) {
+      throw new BadRequestException('Title is required!')
+    }
+   return this.postRepository.findByTitle(title)
+  }
+
   public async deletePost(post_id: string, user_id: string) {
     const post = await this.postRepository.findById(post_id);
 
