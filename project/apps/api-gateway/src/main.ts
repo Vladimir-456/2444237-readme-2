@@ -1,14 +1,10 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { RequestIdInterceptor } from './app/interceptors/request-id.interceptor';
 import { AppExceptionFilter } from './app/filters/app-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AxiosExceptionFilter } from './app/filters/axios-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,7 +25,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalInterceptors(new RequestIdInterceptor)
-  app.useGlobalFilters(new AppExceptionFilter())
+  app.useGlobalFilters(new AxiosExceptionFilter(), new AppExceptionFilter())
 
   const document = SwaggerModule.createDocument(app, config)
 

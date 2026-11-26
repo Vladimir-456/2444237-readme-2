@@ -42,7 +42,7 @@ export class CommentsController {
     summary: 'Создать комментарий',
     description: 'Создаёт новый комментарий к указанной публикации.',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiParam({
     name: 'postId',
     description: 'Уникальный идентификатор публикации',
@@ -119,7 +119,7 @@ export class CommentsController {
     summary: 'Удалить комментарий',
     description: 'Удаляет комментарий из указанной публикации.',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiParam({
     name: 'postId',
     description: 'Уникальный идентификатор публикации',

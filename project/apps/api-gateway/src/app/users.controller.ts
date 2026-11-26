@@ -21,6 +21,7 @@ import { memoryStorage } from 'multer';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -179,6 +180,7 @@ export class UsersController {
     return payload;
   }
 
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Загрузка аватара пользователя' })
   @ApiParam({
     name: 'id',
@@ -187,12 +189,26 @@ export class UsersController {
     required: true,
     example: '6ad1c41523ca94e2b3fb76b3',
   })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    required: true,
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary'
+        }
+      }
+    }
+  })
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor(
     'file', {
       storage: memoryStorage(),
        limits: {
-          fileSize: 5 * 1024,
+          fileSize: 500 * 1024,
           files: 1,
         },
     }
@@ -224,39 +240,19 @@ export class UsersController {
       }
     );
 
-    try {
-  const { data: updatedUser } = await this.httpService.axiosRef.patch(
-    `${ApplicationServiceURL.User}/${userId}/avatar`,
-    {
-      avatarPath: uploadedFile.avatarPath,
-    },
-    {
-      headers: {
-        Authorization: req.headers.authorization,
+    const { data: updatedUser } = await this.httpService.axiosRef.patch(
+      `${ApplicationServiceURL.User}/${userId}/avatar`,
+      {
+        avatarPath: uploadedFile.avatarPath,
       },
-    },
-  );
+      {
+        headers: {
+          Authorization: req.headers.authorization,
+        },
+      },
+    );
 
-  return updatedUser;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('USERS SERVICE ERROR:', {
-        status: error.response?.status,
-        data: error.response?.data,
-        url: error.config?.url,
-      });
-
-      const status = error.response?.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
-      const data = error.response?.data;
-
-      throw new HttpException(
-        data?.message ?? 'Не удалось обновить аватар пользователя',
-        status,
-      );
-    }
-    
-    throw error;
-  }
+    return updatedUser;
   }
 
   @ApiOperation({

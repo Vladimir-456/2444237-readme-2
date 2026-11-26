@@ -6,7 +6,7 @@ import { UserIdInterceptor } from "./interceptors/user-id.interceptor";
 import { AxiosExceptionFilter } from "./filters/axios-exception.filter";
 import { createDtoMap, CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreatePostRDO, CreatePostWithUserRDO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto, PostInterface, PostQueryDto, PostType, SearchPostRdo, UpdatePostDTO, UserInterface } from "@project/shared-types";
 import {PostDtoValidationPipe} from "@project/core"
-import { query, Request } from 'express'
+import { Request } from 'express'
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiExtraModels, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
 
@@ -28,7 +28,7 @@ export class PostController {
     @UseGuards(CheckAuthGuard)
     @UseInterceptors(UserIdInterceptor)
     @ApiResponse({ status: 201, type: CreatePostRDO })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
         summary: 'Создание нового поста',
         description: 'Создает новый пост',
@@ -67,12 +67,12 @@ export class PostController {
     }
 
     @UseGuards(JwtAuthGuard, CheckAuthGuard)
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
         summary: 'Репоста поста',
         description: 'Создает репост для конкретного поста',
     })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiParam({
         name: 'postId',
         description: 'Уникальный идентификатор поста',
@@ -109,7 +109,9 @@ export class PostController {
         description: 'Вернет все посты с данным названием',
     })
     @ApiQuery({
-        type: PostQueryDto,
+        name: 'title',
+        type: String,
+        required: true,
     })
     @ApiOkResponse({
         description: 'Посты с данным названием',
@@ -130,7 +132,6 @@ export class PostController {
         summary: 'Получение всех постов',
         description: 'Вернет все посты с данными авторов',
     })
-    @ApiBearerAuth()
     @ApiQuery({
         type: PostQueryDto,
     })
@@ -142,7 +143,9 @@ export class PostController {
         @Req() req: Request,
         @Query() query: PostQueryDto
     ) {
-        const postsResponse = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Post}`)
+        const postsResponse = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Post}`, {
+            params: query
+        })
 
         const posts = postsResponse.data as PostInterface[]
 
@@ -150,8 +153,7 @@ export class PostController {
 
         const userDataResponse = await this.httpService.axiosRef.get(`${ApplicationServiceURL.User}/bulk`, {
             params: {
-                ids: authorIds.join(','),
-                query
+                ids: authorIds.join(',')
             },
             headers: {
                 Authorization: req.headers['authorization'],
@@ -173,7 +175,7 @@ export class PostController {
 
     @ApiOperation({
         summary: 'Получение поста по id',
-        description: 'Вернет один пост по его id.',
+        description: 'Вернет один пост по id.',
     })
     @Get(':id')
     @ApiParam({

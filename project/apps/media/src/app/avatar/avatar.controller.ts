@@ -19,7 +19,7 @@ export class AvatarController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: memoryStorage(),
-      limits: { fileSize: 5 * 1024 },
+      limits: { fileSize: 500 * 1024 },
     }),
   )
   public uploadAvatar(
