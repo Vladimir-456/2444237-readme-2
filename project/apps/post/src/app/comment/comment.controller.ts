@@ -29,6 +29,8 @@ export class CommentController {
     @Param('postId', new ParseUUIDPipe()) postId: string,
     @CurrentUser() user: TokenPayload
   ) {
+    console.log(dto)
+    console.log(user)
     const comment = await this.commentService.createComment(
       dto,
       postId,
