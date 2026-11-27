@@ -54,7 +54,6 @@ export class PostController {
   async search (
     @Query() query: { title: string }
   ) {
-    console.log(query.title)
     return this.postService.searchPost(query.title)
   }
 

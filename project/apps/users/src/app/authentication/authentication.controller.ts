@@ -56,7 +56,6 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getUser(@Param('id', new ParseMongoIdPipe()) id: string) {
-    console.log('error!!!')
     const user = await this.authenticationService.getUser(id);
 
     if (!user) throw new NotFoundException('User not found');
