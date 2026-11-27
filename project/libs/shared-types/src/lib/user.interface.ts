@@ -4,7 +4,7 @@ export interface UserInterface {
   name: string;
   password: string;
   avatar?: string;
-  lastNewsletterSent?: Date;
+  createdAt?: Date;
 }
 
 export interface UserAvatarInterface {

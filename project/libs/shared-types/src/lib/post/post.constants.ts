@@ -1,7 +1,5 @@
-import { CreateLinkPostDto, CreatePhotoPostDto, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from "./dto/create-dto.interface";
-import { UpdateLinkPostDTO, UpdatePhotoPostDTO, UpdateQuotePostDTO, UpdateTextPostDTO, UpdateVideoPostDTO } from "./dto/update-dto.interface";
-
-export const AUTHOR_ID = 'user34324532';
+import { CreateLinkPostDto, CreatePhotoPostDto, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from "./create-dto.interface"
+import { UpdateLinkPostDTO, UpdatePhotoPostDTO, UpdateQuotePostDTO, UpdateTextPostDTO, UpdateVideoPostDTO } from "./update-dto.interface"
 
 export const createDtoMap = {
   LINK: CreateLinkPostDto,

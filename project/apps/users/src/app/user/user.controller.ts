@@ -1,8 +1,11 @@
-import { Controller, Param, ParseUUIDPipe, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { NotifyService } from "../notify/notify.service";
-import { CurrentUser, CurrentUserPayload } from '@project/core'
+import { CurrentUser, CurrentUserPayload, ParseMongoIdPipe } from '@project/core'
 import { JwtAuthGuard } from "../authentication/guards/jwt-auth.guard";
+import { UpdateAvatarDto } from "./dto/update-avatar.dto";
+import { fillDTO } from "@project/helpers";
+import { UpdateAvatarRdo } from "./dto/update-avatar.rdo";
 
 @Controller('users')
 export class UserController {
@@ -19,6 +22,25 @@ export class UserController {
         await this.notifyService.requestNotifyLetter(user)
     }
 
+    @Get('bulk')
+    async findByIds(
+        @Query('ids') ids: string
+    ) {
+        const userIds = ids.split(',')
+        return this.userService.getUser(userIds);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id/avatar')
+    async updateAvatar (
+        @Param('id', ParseMongoIdPipe) userId: string,
+        @Body() dto: UpdateAvatarDto,
+    ) {
+        const updatedUser = await this.userService.updateAvatar(userId, dto.avatarPath);
+        return fillDTO(UpdateAvatarRdo, updatedUser)
+    }
+
+
     @UseGuards(JwtAuthGuard)
     @Post(':authorId/subscribe')
     async subscribe(
@@ -33,4 +55,5 @@ export class UserController {
 
     return { success: true };
     }
+
 }

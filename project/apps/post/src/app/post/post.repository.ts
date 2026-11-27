@@ -1,10 +1,9 @@
-import { PostStatus, Prisma, PrismaClient } from '@prisma/client';
+import { PostStatus, PostType, Prisma, PrismaClient } from '@prisma/client';
 import { PostEntity } from './post.entity';
 import { PrismaRepository } from '@project/core';
-import { PostInterface, PostSort } from '@project/shared-types';
+import { CreatePostData, PostInterface, PostQueryDto, PostSort } from '@project/shared-types';
 import { PrismaClientService } from '@project/models';
 import { Injectable } from '@nestjs/common';
-import { PostQueryDto } from './dto/filter-dto.interface';
 
 @Injectable()
 export class PostRepository extends PrismaRepository<
@@ -13,15 +12,73 @@ export class PostRepository extends PrismaRepository<
   PostInterface
 > {
   constructor(prisma: PrismaClientService) {
-    super(prisma.post, (data) => PostEntity.fromPrisma(data));
+    super(prisma.post, (data) => PostEntity.fromCreatedfromPrisma(data));
   }
 
-  async findAll(query: PostQueryDto): Promise<PostEntity[]> {
-    const { page = 1, limit = 25, sort = PostSort.NEWEST } = query;
+  async findByTitle(title: string) {
+    const words = title.toLowerCase().split(/\s+/).filter(Boolean);
+    const where = {
+      status: PostStatus.PUBLISHED,
+      title: {
+        notIn: ['', ' '],
+      },
+      OR: words.map((word) => ({
+        title: {
+          contains: word,
+          mode: 'insensitive' as const,
+        },
+      })),
+};
+
+const [documents, total] = await Promise.all([
+    this.model.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+    }),
+    this.model.count({ where }),
+  ]);
+
+  return {
+    total,
+    items: documents,
+  };
+}
+
+  async findAll(query: PostQueryDto, currentUserId?: string,): Promise<PostEntity[]> {
+    const {
+    page = 1,
+    limit = 25,
+    sort = PostSort.NEWEST,
+    type,
+    tag,
+    draft,
+  } = query;
     const skip = (page - 1) * limit;
 
+    const where: Prisma.PostWhereInput = {
+      status: PostStatus.PUBLISHED,
+    }
+
+    if (type) {
+      where.typePost = type as PostType;
+    }
+
+    if (tag) {
+      where.tags = {
+        has: tag,
+      };
+    }
+
+    if (draft) {
+      where.status = PostStatus.DRAFT;
+      where.authorId = currentUserId;
+    }
+
     const posts = await this.model.findMany({
-      where: { status: PostStatus.PUBLISHED },
+      where: where,
       select: {
         id: true,
         authorId: true,
@@ -40,6 +97,8 @@ export class PostRepository extends PrismaRepository<
         imageUrl: true,
         link: true,
         description: true,
+        originalPostId: true,
+        originalAuthorId: true,
 
         _count: {
           select: {
@@ -55,6 +114,23 @@ export class PostRepository extends PrismaRepository<
     return posts.map((post) => PostEntity.fromPrisma(post));
   }
 
+  async getCountPostByUser (authorId: string) {
+    return this.model.count({
+      where: {
+        authorId,
+      },
+    });
+  }
+
+  async findByOriginalPostId (postId: string, userId: string) {
+    return this.model.findFirst({
+      where: {
+        originalPostId: postId,
+        authorId: userId,
+      }
+    })
+  }
+
   async getPostTypeById (id: string) {
     const postType = await this.model.findUnique({
       where: {id},
@@ -64,6 +140,14 @@ export class PostRepository extends PrismaRepository<
     })
 
     return postType?.typePost
+  }
+
+  async createRepost(data: CreatePostData) {
+    const post = await this.model.create({
+      data,
+    });
+
+    return PostEntity.fromCreatedfromPrisma(post)
   }
 
   private getOrderBy(sort: PostSort): Prisma.PostOrderByWithRelationInput[] {

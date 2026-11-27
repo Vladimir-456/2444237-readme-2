@@ -1,0 +1,97 @@
+POST http://localhost:3300/api/users/login
+Content-Type: application/json
+
+{
+    "email": "lev_i3412@mail.ru",
+    "password": "Strong123!"
+}
+###
+
+
+###
+POST http://localhost:3300/api/users/register
+Content-Type: application/json
+
+{
+  "email": "lev_i3412@mail.ru",
+  "password": "Strong123!",
+  "name": "Lev",
+  "avatar": "image.png"
+}
+###
+
+POST http://localhost:3300/api/users/6affe9475401556ad6949aca/avatar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiL21lZGlhL2F2YXRhcnMvNmFmZmU5NDc1NDAxNTU2YWQ2OTQ5YWNhLTMzOWU5M2NkLTU1ODYtNGE1Mi04ODJmLWYyMmRlMmZjMjI3OS5qcGciLCJpYXQiOjE3OTU1MDI1NDcsImV4cCI6MTc5NTUwMzQ0N30.PuODwRXa2IM7Yv_W7rKXvPcsBTTUhPbdiM2MpDwtD4E
+Content-Type: multipart/form-data; boundary=AvatarBoundary
+
+--AvatarBoundary
+Content-Disposition: form-data; name="file"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./avatar.jpg
+--AvatarBoundary--
+
+###
+POST http://localhost:3300/api/admin/post-mailing
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1NTAxNTcyLCJleHAiOjE3OTU1MDI0NzJ9.6nqbhAATgGWVvT4xaZP5DIoRue41sbbU_SpqSriLRf8
+###
+POST http://localhost:3300/api/users/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1NDEzMTAyLCJleHAiOjE3OTU0MTQwMDJ9.x9jzgMOtXypRFsJiZg1uk_X87m9oDdlzAEFygjZaDGM
+###
+POST http://localhost:3300/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1MTU3ODYzLCJleHAiOjE3OTUxNTg3NjN9.0AO43HebHj1WS_U7BZkJDv4kW87B_jtjVvw6NZQtzCo
+Content-Type: application/json
+
+{
+  "typePost": "VIDEO",
+  "title": "Очень интересное видео о разработке",
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+###
+
+POST http://localhost:3300/api/users/check
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1NDE0ODI5LCJleHAiOjE3OTU0MTU3Mjl9.FZWq3LEgV0vZW1Ki6OZOTBg7hYaIqjUYmkHXgZlD5iE
+###
+    
+GET http://localhost:3300/api/users/6affe9475401556ad6949aca
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiL21lZGlhL2F2YXRhcnMvNmFmZmU5NDc1NDAxNTU2YWQ2OTQ5YWNhLTMzOWU5M2NkLTU1ODYtNGE1Mi04ODJmLWYyMmRlMmZjMjI3OS5qcGciLCJpYXQiOjE3OTU1MDI1NDcsImV4cCI6MTc5NTUwMzQ0N30.PuODwRXa2IM7Yv_W7rKXvPcsBTTUhPbdiM2MpDwtD4E
+###
+POST http://localhost:3300/api/comments/cc6128df-fb2d-4773-9e01-0e66215b2b4c
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1MTU3ODYzLCJleHAiOjE3OTUxNTg3NjN9.0AO43HebHj1WS_U7BZkJDv4kW87B_jtjVvw6NZQtzCo
+
+{
+  "text": "Test!!!sddsfgdfg"
+}
+
+###
+POST http://localhost:3300/api/likes/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjcxNjk0LCJleHAiOjE3OTQ2NzI1OTR9.hNhaE8zfP9LEApOxWOFtB0gAOu1hBkhoAz1saHgzBxM
+###
+
+###
+
+POST http://localhost:3300/api/posts/027d96d0-ef37-4354-8f5c-0ea043f0cf36/repost
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1MTU3MzYxLCJleHAiOjE3OTUxNTgyNjF9.csYDxT4P5Hj56GPUQwf1Y4rVsndiIgqyBQs8NeUuwOw
+
+###
+
+DELETE http://localhost:3300/api/likes/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjcxNjk0LCJleHAiOjE3OTQ2NzI1OTR9.hNhaE8zfP9LEApOxWOFtB0gAOu1hBkhoAz1saHgzBxM
+###
+GET http://localhost:3300/api/comments/01ce1815-d508-4fa2-b1e1-a86e4c37054f
+###
+
+###
+DELETE http://localhost:3300/api/comments/01ce1815-d508-4fa2-b1e1-a86e4c37054f/7fa15cc5-07a3-485a-94b4-d237324e691e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjY2MzEwLCJleHAiOjE3OTQ2NjcyMTB9._yV41TNIJNVHMzHZn0DM59GXj1wV-wtVP9J0bgkXpew
+
+GET http://localhost:3300/api/comments
+
+###
+
+GET http://localhost:3300/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZmZlOTQ3NTQwMTU1NmFkNjk0OWFjYSIsImVtYWlsIjoibGV2X2kzNDEyQG1haWwucnUiLCJuYW1lIjoiTGV2IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk1NDEyMTM0LCJleHAiOjE3OTU0MTMwMzR9.G0uZA9gcSMnCOwef6EzkPfyMZTGIHq0UBA0WYyxb36U
+###
+DELETE http://localhost:3300/api/posts/027d96d0-ef37-4354-8f5c-0ea043f0cf36
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0Mzc3MDAwLCJleHAiOjE3OTQzNzc5MDB9.CjAzsMyyemoLofSqzWlj-xtNKTd4kEcCOstVh99BJ-k

@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { createReadStream } from 'node:fs';
-import { access, mkdir, unlink } from 'node:fs/promises';
+import { access, mkdir, unlink, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 @Injectable()
@@ -16,7 +16,14 @@ export class FileStoreService {
   );
 
   public async saveFile(file: Express.Multer.File, prefix: string) {
-    await mkdir(this.uploadDirectory, { recursive: true });
+
+    if (!file || !Buffer.isBuffer(file.buffer)) {
+      throw new BadRequestException('Файл не передан или отсутствует буфер');
+    }
+
+    if (file.buffer.length === 0) {
+      throw new BadRequestException('Нельзя загрузить пустой файл');
+    }
 
     const extension = this.getSafeExtensions(file);
 
@@ -25,11 +32,21 @@ export class FileStoreService {
     const filePath = join(this.uploadDirectory, fileName);
 
     try {
-      (await file.buffer)
-        ? this.writeBuffer(file.buffer, filePath)
-        : this.copyDiskFile(file.path, filePath);
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to save file');
+      await mkdir(this.uploadDirectory, { recursive: true });
+      await writeFile(filePath, file.buffer, {
+        flag: 'wx'
+      })
+    }
+    catch (error) {
+      console.log(error)
+      throw new InternalServerErrorException(
+        'Не удалось сохранить аватар',
+      );
+    }
+
+    return {
+      fileName,
+      avatarPath: `/media/avatars/${fileName}`
     }
   }
 

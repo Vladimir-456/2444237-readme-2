@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AvatarModule } from './avatar/avatar.module';
-import { AvatarController } from './avatar/avatar.controller';
+import { FileStorageModule } from './file-storage/file-storage.module';
 
 @Module({
-  imports: [AvatarModule],
-  providers: [AvatarModule],
-  controllers: [],
+  imports: [AvatarModule, FileStorageModule],
 })
 export class AppModule {}

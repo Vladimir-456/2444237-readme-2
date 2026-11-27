@@ -10,6 +10,7 @@ import { MailingUserService } from "../mailing/mailing-user.service";
 import { MailingService } from "../mailing/mailing.service";
 import { PostMailingCreatedDto } from "../mailing/dto/post-mailing.dto";
 import { EXCHANGE_RABBIT } from "./email-subscriber.constants";
+
 @Controller()
 export class EmailSubscriberController {
     constructor(
@@ -18,6 +19,7 @@ export class EmailSubscriberController {
         private readonly mailingUserService: MailingUserService,
         private readonly mailingService: MailingService,
     ) {}
+
     @RabbitSubscribe({
         exchange: EXCHANGE_RABBIT,
         routingKey: RabbitRouting.AddSubscriber,

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PostType } from '@project/shared-types';
 import { IsOptional, IsString, IsUrl, MaxLength, Min, MinLength } from 'class-validator';
+import { PostType } from '../post.interface';
 
 
 export class CreateLinkPostDto {

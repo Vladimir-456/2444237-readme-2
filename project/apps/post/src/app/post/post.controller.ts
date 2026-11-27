@@ -8,29 +8,17 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { fillDTO } from '@project/helpers';
-import { CreatePostRDO } from './rdo/create-post.rdo';
-import { CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto } from './dto/create-dto.interface';
-import { UpdatePostDTO } from './dto/update-dto.interface';
-import { AUTHOR_ID, createDtoMap, updateDtoMap } from './post.constant';
 import { ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { PostQueryDto } from './dto/filter-dto.interface';
 import { CurrentUser, CurrentUserPayload, PostDtoValidationPipe } from '@project/core'
-import { PostType } from '@project/shared-types';
+import { createDtoMap, CreateLinkPostDto, CreatePhotoPostDto, CreatePostDTO, CreatePostRDO, CreateQuotePostDto, CreateTextPostDto, CreateVideoPostDto, PostQueryDto, PostType, RequestWithUser, TokenPayload, updateDtoMap, UpdatePostDTO } from '@project/shared-types';
 import { NotifyService } from '../notify/notify.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
-@ApiExtraModels(
-  CreateTextPostDto,
-  CreatePhotoPostDto,
-  CreateLinkPostDto,
-  CreateQuotePostDto,
-  CreateVideoPostDto,
-)
-@ApiTags('Post')
 @Controller('post')
 export class PostController {
   constructor(
@@ -39,47 +27,16 @@ export class PostController {
   ) 
   {}
 
-  @ApiResponse({ status: 200, type: [CreatePostRDO] })
   @Get('/')
   async getPosts(@Query() query: PostQueryDto) {
     return this.postService.getPosts(query);
   }
 
-  @ApiResponse({ status: 201, type: CreatePostRDO })
-  @UseGuards(JwtAuthGuard)
   @Post('/')
-  @ApiOperation({
-    summary: 'Create a new post',
-    requestBody: {
-      required: true,
-      content: {
-        'application/json': {
-          schema: {
-            oneOf: [
-              { $ref: getSchemaPath(CreateTextPostDto)},
-              { $ref: getSchemaPath(CreatePhotoPostDto)},
-              { $ref: getSchemaPath(CreateLinkPostDto)},
-              { $ref: getSchemaPath(CreateQuotePostDto)},
-              { $ref: getSchemaPath(CreateVideoPostDto)},
-            ],
-            discriminator: {
-              propertyName: 'typePost',
-              mapping: {
-              [PostType.TEXT]: getSchemaPath(CreateTextPostDto),
-              [PostType.PHOTO]: getSchemaPath(CreatePhotoPostDto),
-              [PostType.LINK]: getSchemaPath(CreateLinkPostDto),
-              [PostType.QUOTE]: getSchemaPath(CreateQuotePostDto),
-              [PostType.VIDEO]: getSchemaPath(CreateVideoPostDto),
-            },
-            },
-          },
-        },
-      },
-    },
-  })
+  @UseGuards(JwtAuthGuard)
   async createPost(
     @Body(new PostDtoValidationPipe({createDto: createDtoMap, updateDto: {}})) dto: CreatePostDTO,
-    @CurrentUser() user : CurrentUserPayload
+    @CurrentUser() user: { id: string; email: string }
   ) {
     const created = await this.postService.createPost(dto, user.id);
 
@@ -93,31 +50,57 @@ export class PostController {
     return fillDTO(CreatePostRDO, created);
   }
 
-  @ApiResponse({ status: 200, type: CreatePostRDO })
-  @Delete('/:id')
-  async deletePost(@Param('id') id: string) {
-    return this.postService.deletePost(id);
+  @Get('/search')
+  async search (
+    @Query() query: { title: string }
+  ) {
+    console.log(query.title)
+    return this.postService.searchPost(query.title)
   }
 
-  @ApiResponse({ status: 200, type: CreatePostRDO })
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  async deletePost(@CurrentUser() user: CurrentUserPayload, @Param('id') id: string) {
+    return this.postService.deletePost(id, user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:authorId/count')
+  async getPostCountByUser (
+    @Param('authorId') authorId: string
+  ) {
+    const result = await this.postService.getCountPostByUser(authorId)
+
+    return result
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':postId/repost')
+  async repost(
+    @CurrentUser() user: TokenPayload,
+    @Param('postId') postId: string
+  ) {
+    return this.postService.repost(postId, user.id)
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
-  async updatePost (@Param('id') id:  string, @Body() dto: UpdatePostDTO) {
+  async updatePost (@CurrentUser() user: CurrentUserPayload, @Param('id') id:  string, @Body() dto: UpdatePostDTO) {
     const pipe = new PostDtoValidationPipe({
-    createDto: {},
-    updateDto: updateDtoMap,
-    getExistingPostType: (postId) => this.postService.getPostTypeById(postId) as Promise<string | null>,
-    postId: id,
+      createDto: {},
+      updateDto: updateDtoMap,
+      getExistingPostType: (postId) => this.postService.getPostTypeById(postId) as Promise<string | null>,
+      postId: id,
     });
 
     const validationDto = await pipe.transform(dto, {
       metatype: undefined,
       type: 'body'
     })
-    const updated = await this.postService.updatePost(id, validationDto);
+    const updated = await this.postService.updatePost(id, validationDto, user.id);
     return fillDTO(CreatePostRDO, updated);
   }
 
-  @ApiResponse({ status: 200, type: CreatePostRDO })
   @Get('/:id')
   async getPost(@Param('id') id: string) {
     const post = await this.postService.getPost(id);

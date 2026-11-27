@@ -29,4 +29,8 @@ export class EmailSubscriberRepository extends MongoRepository<EmailSubscriberEn
         .find({ authorId })
         .exec();
     }
+
+    async countByAuthorId(authorId: string) {
+        return this.model.countDocuments({authorId})
+    }
 }

@@ -2,27 +2,25 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
+  HttpCode,
   HttpStatus,
   NotFoundException,
   Param,
   Post,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
 import { AuthenticationService } from './authentication.service';
 import { fillDTO } from '@project/helpers';
-import { LoginUserDTO } from './dto/login-user.dto';
-import { CreateUserRdo } from './rdo/create-user.rdo';
-import { LoginUserRdo } from './rdo/login-user.rdo';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ParseMongoIdPipe } from '@project/core';
+import { CurrentUser, ParseMongoIdPipe } from '@project/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CreateUserDTO, CreateUserRdo, LoginUserRdo, RequestWithUser, ResetPasswordDto, TokenPayload, UserInterface } from '@project/shared-types';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
+import { Request } from 'express'
 
-@ApiTags('auth')
+
 @Controller('auth')
 export class AuthenticationController {
   constructor(
@@ -30,8 +28,6 @@ export class AuthenticationController {
     private readonly notifyService: NotifyService,
   ) {}
 
-  @ApiOperation({ summary: 'Регистрация нового пользователя'})
-  @ApiResponse({ status: 201, type: CreateUserRdo })
   @Post('/register')
   async register(@Body() dto: CreateUserDTO) {
     const newUser = await this.authenticationService.register(dto);
@@ -47,28 +43,45 @@ export class AuthenticationController {
     return fillDTO(CreateUserRdo, newUser);
   }
 
-  @ApiOperation({ summary: 'Вход в систему'})
-  @ApiResponse({ status: 200, type: LoginUserRdo })
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
   @Post('/login')
-  async login(@Body() dto: LoginUserDTO) {
-    const user = await this.authenticationService.verify(dto);
+  async login(@Req() {user} : RequestWithUser) {
     const userToken = await this.authenticationService.createUserToken(user)
 
     return fillDTO(LoginUserRdo, {...user, ...userToken});
   }
 
-  @ApiOperation({ summary: 'Получение информации о пользователе'})
-  @ApiBearerAuth('acess-token')
-  @ApiParam({ name: 'id', description: 'Идентификатор пользователя', type: Number })
   @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 200, type: CreateUserRdo })
+  @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getUser(@Param('id', new ParseMongoIdPipe()) id: string) {
+    console.log('error!!!')
     const user = await this.authenticationService.getUser(id);
 
     if (!user) throw new NotFoundException('User not found');
 
     return fillDTO(CreateUserRdo, user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/reset')
+  async resetPassword (@CurrentUser() user: TokenPayload, @Body() dto: ResetPasswordDto) {
+    return this.authenticationService.resetPassword(user, dto.currentPassword, dto.newPassword)
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refreshToken (@Req() { user }: RequestWithUser) {
+    return this.authenticationService.createUserToken(user)
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  async checkAuth (@Req() req: Request) {
+    return await this.authenticationService.checkUserToken(req)
   }
 
 }

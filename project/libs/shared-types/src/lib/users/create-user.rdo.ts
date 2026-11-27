@@ -18,4 +18,8 @@ export class CreateUserRdo {
   @ApiProperty({ description: 'User avatar', example: 'avatar.jpg' })
   @Expose()
   avatar?: string;
+
+  @ApiProperty({ description: 'Created Date' })
+  @Expose()
+  createdAt?: Date;
 }

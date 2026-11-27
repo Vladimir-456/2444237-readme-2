@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/post
+POST http://localhost:3500/api/post
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWQxYzQxNTIzY2E5NGUyYjNmYjc2YjMiLCJlbWFpbCI6InZsYWRAYmsucnUiLCJuYW1lIjoiQWxleCIsImF2YXRhciI6ImltYWdlLnBuZyIsImlhdCI6MTc5MzI2MjE5MSwiZXhwIjoxNzkzMjYzMDkxfQ.A7pSgneChcLg2zmegpgfsbanewJ8eYcD7a6ZJ8-1Uw4
 Content-Type: application/json
 
@@ -9,9 +9,10 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:3300/api/post?page=1&limit=25&sort=mostLiked
+GET http://localhost:3500/api/post?page=1&limit=25&sort=mostLiked
 ###
-GET http://localhost:3300/api/post/b915f92b-d452-425e-9e0d-a643eee24beb
+GET http://localhost:3500/api/post/6ad1c41523ca94e2b3fb76b3/count
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjYxOTYzLCJleHAiOjE3OTQ2NjI4NjN9.OYksqL-3gtioFbRP-ID11AA9D_E3M8kfTv9tl5zk4-8
 ###
 DELETE http://localhost:3300/api/post/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
 
@@ -49,3 +50,6 @@ Content-Type: application/json
   "text": "Test",
   "preview": "В этой публикации разберём основные возможности NestJS"
 }
+
+###
+GET http://localhost:3500/api/post/ping

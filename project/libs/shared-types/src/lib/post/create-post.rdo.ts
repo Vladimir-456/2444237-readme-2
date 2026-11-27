@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PostStatus, PostType } from '@project/shared-types';
 import { Expose } from 'class-transformer';
+import { PostStatus, PostType } from '../post.interface';
 
 export class CreatePostRDO {
   @ApiProperty({

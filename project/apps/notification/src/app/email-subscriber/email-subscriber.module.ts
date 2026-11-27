@@ -8,6 +8,7 @@ import { getRabbitOptions } from "@project/notify";
 import { MailModule } from "../mail/mail.module";
 import { EmailSubscriberController } from "./email-subscriber.controller";
 import { MailingModule } from "../mailing/mailing.module";
+import { SubscribersController } from "./subscribers.controller";
 
 @Module({
     imports: [
@@ -19,7 +20,8 @@ import { MailingModule } from "../mailing/mailing.module";
         MailingModule
     ],
     controllers: [
-        EmailSubscriberController
+        EmailSubscriberController,
+        SubscribersController
     ],
     providers: [
         EmailSubscriberService,

@@ -35,13 +35,17 @@ model Post {
     imageUrl    String?   @map("image_url")
     link        String?
     description String?
+    originalPostId String?
+    originalAuthorId String?
+    
     comments    Comment[]
     likes       Like[]
-    
+
     digestPosts DigestPost[]
+    postMailingItems PostMailingItem[]
 
     @@map("posts")
-    postMailingItems PostMailingItem[]
+    @@unique([authorId, originalPostId])
 }
 
 enum PostMailingStatus {

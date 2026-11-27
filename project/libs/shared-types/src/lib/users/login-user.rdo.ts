@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Token } from '@project/shared-types';
 import { Expose } from 'class-transformer';
 
 export class LoginUserRdo {
@@ -30,4 +29,11 @@ export class LoginUserRdo {
   })
   @Expose()
   accessToken!: string
+
+  @Expose()
+  @ApiProperty({
+    description: 'Refresh Token',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwidG9rZW5JZCI6ImU0MjkxNzRmLTk5MzItNDkyZS05YjQ0LWQzN2YxZTFlMmZiMSIsImlhdCI6MTc5NDU4Mjg3MywiZXhwIjoxNzk1NDQ2ODczfQ.kPpM4GjFbRufa02C1FR0yRkgf4ntFanCbQ506aL2_oc'
+  })
+  refreshToken!: string
 }

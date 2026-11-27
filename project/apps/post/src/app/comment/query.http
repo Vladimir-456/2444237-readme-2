@@ -2,8 +2,9 @@ GET http://localhost:3300/api/post/b915f92b-d452-425e-9e0d-a643eee24beb/comments
 
 ###
 # Создание комментария
-POST http://localhost:3300/api/post/b915f92b-d452-425e-9e0d-a643eee24beb/comments
+POST http://localhost:3500/api/post/01ce1815-d508-4fa2-b1e1-a86e4c37054f/comments
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDFjNDE1MjNjYTk0ZTJiM2ZiNzZiMyIsImVtYWlsIjoidmxhZEBiay5ydSIsIm5hbWUiOiJBbGV4IiwiYXZhdGFyIjoiaW1hZ2UucG5nIiwiaWF0IjoxNzk0NjYzOTQwLCJleHAiOjE3OTQ2NjQ4NDB9.n01ifMSsjmDRMvYKO-r9ywtR2avuwtuaC7GfPqjU-dI
 
 {
     "text": "Testsdfsdfsdfsdfsd"

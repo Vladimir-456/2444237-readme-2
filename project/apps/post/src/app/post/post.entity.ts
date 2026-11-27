@@ -4,7 +4,59 @@ import { PostType } from '@prisma/client';
 import { PostType as DomainPostType, PostStatus } from '@project/shared-types';
 import { Prisma } from '@prisma/client';
 
-export type PrismaPost = Prisma.PostGetPayload<{}>;
+export type PrismaPostCreated = Prisma.PostGetPayload<{
+  select: {
+    id: true;
+    authorId: true;
+    tags: true;
+    status: true;
+    isRepost: true;
+    originalPostId: true;
+    originalAuthorId: true;
+    createdAt: true;
+    updatedAt: true;
+    publishDate: true;
+    typePost: true;
+    title: true;
+    url: true;
+    preview: true;
+    text: true;
+    author: true;
+    imageUrl: true;
+    link: true;
+    description: true;
+  };
+}>;
+
+export type PrismaPost = Prisma.PostGetPayload<{
+  select: {
+    id: true;
+    authorId: true;
+    tags: true;
+    status: true;
+    isRepost: true;
+    originalPostId: true;
+    originalAuthorId: true;
+    createdAt: true;
+    updatedAt: true;
+    publishDate: true;
+    typePost: true;
+    title: true;
+    url: true;
+    preview: true;
+    text: true;
+    author: true;
+    imageUrl: true;
+    link: true;
+    description: true;
+    _count: {
+      select: {
+        comments: true;
+        likes: true;
+      };
+    };
+  };
+}>;
 
 export class PostEntity implements Entity<string, PostInterface> {
   public id: string;
@@ -38,6 +90,68 @@ export class PostEntity implements Entity<string, PostInterface> {
     };
   }
 
+
+  static fromCreatedfromPrisma (post: PrismaPostCreated) {
+    const base = {
+    ...post,
+    id: post.id.toString(),
+    status: PostStatus.PUBLISHED,
+    };
+    switch (post.typePost) {
+    case PostType.TEXT:
+      return new PostEntity({
+        ...base,
+        typePost: DomainPostType.TEXT,
+        title: post.title as string,
+        preview: post.preview as string,
+        text: post.text as string,
+        originalAuthorId: undefined,
+        originalPostId: undefined,
+      });
+
+    case PostType.VIDEO:
+      return new PostEntity({
+        ...base,
+        typePost: DomainPostType.VIDEO,
+        title: post.title as string,
+        url: post.url as string,
+        originalAuthorId: undefined,
+        originalPostId: undefined,
+      });
+
+    case PostType.PHOTO:
+      return new PostEntity({
+        ...base,
+        typePost: DomainPostType.PHOTO,
+        imageUrl: post.imageUrl as string,
+        originalAuthorId: undefined,
+        originalPostId: undefined,
+      });
+
+    case PostType.QUOTE:
+      return new PostEntity({
+        ...base,
+        typePost: DomainPostType.QUOTE,
+        text: post.text as string,
+        author: post.author as string,
+        originalAuthorId: undefined,
+        originalPostId: undefined,
+      });
+
+    case PostType.LINK:
+      return new PostEntity({
+        ...base,
+        typePost: DomainPostType.LINK,
+        link: post.link as string,
+        description: post.description as string,
+        originalAuthorId: undefined,
+        originalPostId: undefined,
+      });
+
+    default:
+      throw new Error('Invalid post type');
+  }
+  }
   static fromPrisma(post: PrismaPost): PostEntity {
     switch (post.typePost) {
       case PostType.TEXT:
@@ -49,6 +163,8 @@ export class PostEntity implements Entity<string, PostInterface> {
           title: post.title as string,
           preview: post.preview as string,
           text: post.text as string,
+          originalAuthorId: undefined,
+          originalPostId: undefined,
         });
       case PostType.VIDEO:
         return new PostEntity({
@@ -58,6 +174,8 @@ export class PostEntity implements Entity<string, PostInterface> {
           status: PostStatus.PUBLISHED,
           title: post.title as string,
           url: post.url as string,
+          originalAuthorId: undefined,
+          originalPostId: undefined,
         });
       case PostType.PHOTO:
         return new PostEntity({
@@ -66,6 +184,8 @@ export class PostEntity implements Entity<string, PostInterface> {
           typePost: DomainPostType.PHOTO,
           status: PostStatus.PUBLISHED,
           imageUrl: post.imageUrl as string,
+          originalAuthorId: undefined,
+          originalPostId: undefined,
         });
       case PostType.QUOTE:
         return new PostEntity({
@@ -75,6 +195,8 @@ export class PostEntity implements Entity<string, PostInterface> {
           status: PostStatus.PUBLISHED,
           text: post.text as string,
           author: post.author as string,
+          originalAuthorId: undefined,
+          originalPostId: undefined,
         });
 
       case PostType.LINK:
@@ -85,6 +207,8 @@ export class PostEntity implements Entity<string, PostInterface> {
           status: PostStatus.PUBLISHED,
           link: post.link as string,
           description: post.description as string,
+          originalAuthorId: undefined,
+          originalPostId: undefined,
         });
 
       default:
